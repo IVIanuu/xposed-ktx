@@ -199,7 +199,7 @@ inline fun Class<*>.getStaticStringField(fieldName: String) =
  * Calls the method with the name and the args
  */
 inline fun Any.callMethod(methodName: String,
-                          vararg args: Any) = XposedHelpers.callMethod(this, methodName, args)
+                          vararg args: Any) = XposedHelpers.callMethod(this, methodName, *args)
 
 /**
  * Calls the method with the name and the args
@@ -207,14 +207,14 @@ inline fun Any.callMethod(methodName: String,
 inline fun Any.callMethod(methodName: String,
                           parameterTypes: Array<Class<*>>,
                           vararg args: Any) =
-        XposedHelpers.callMethod(this, methodName, parameterTypes, args)
+        XposedHelpers.callMethod(this, methodName, parameterTypes, *args)
 
 /**
  * Calls the static method with the name and the args
  */
 inline fun Class<*>.callStaticMethod(methodName: String,
                                      vararg args: Any) =
-        XposedHelpers.callStaticMethod(this, methodName, args)
+        XposedHelpers.callStaticMethod(this, methodName, *args)
 
 /**
  * Calls the static method with the name and the args
@@ -222,4 +222,4 @@ inline fun Class<*>.callStaticMethod(methodName: String,
 inline fun Class<*>.callStaticMethod(methodName: String,
                           parameterTypes: Array<Class<*>>,
                           vararg args: Any) =
-        XposedHelpers.callStaticMethod(this, methodName, parameterTypes, args)
+        XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args)

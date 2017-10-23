@@ -59,8 +59,8 @@ inline fun <T> Any.getFieldAs(fieldName: String) =
 /**
  * Returns the nullable field with the name
  */
-inline fun <T> Any.getNullableFieldAs(fieldName: String) =
-        getNullableField(fieldName) as T
+inline fun <T> Any.getNullableFieldAs(fieldName: String): T? =
+        getNullableField(fieldName) as T?
 
 /**
  * Returns the boolean field with the name

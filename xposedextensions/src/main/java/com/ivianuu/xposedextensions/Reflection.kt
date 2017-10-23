@@ -62,14 +62,14 @@ inline fun <T> Any.getFieldAs(fieldName: String) =
 /**
  * Returns the nullable field with the name
  */
-inline fun Any.getNullableField(fieldName: String) =
+inline fun Any.getNullableField(fieldName: String): Any? =
         XposedHelpers.getObjectField(this, fieldName)
 
 /**
  * Returns the nullable field with the name
  */
 inline fun <T> Any.getNullableFieldAs(fieldName: String) =
-        XposedHelpers.getObjectField(this, fieldName) as T
+        XposedHelpers.getObjectField(this, fieldName) as T?
 
 /**
  * Returns the additional field with the name
@@ -140,7 +140,7 @@ inline fun <T> Any.getStaticFieldAs(fieldName: String)
 /**
  * Returns the field with the name
  */
-inline fun Class<*>.getNullableStaticField(fieldName: String)
+inline fun Class<*>.getNullableStaticField(fieldName: String): Any?
         = XposedHelpers.getStaticObjectField(this, fieldName)
 
 /**

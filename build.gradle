@@ -1,0 +1,41 @@
+buildscript {
+
+    ext {
+        androidPlugin = 'com.android.tools.build:gradle:3.0.0-rc2'
+        minSdkVersion = 16
+        compileSdkVersion = 26
+        targetSdkVersion = 26
+        buildToolsVersion = '26.0.2'
+
+        kotlinVersion = '1.1.51'
+        kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+        kotlinStdlib = "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+
+        mavenPlugin = 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+
+        supportAppCompat = 'com.android.support:appcompat-v7:26.1.0'
+
+        xposed = 'de.robv.android.xposed:api:82'
+    }
+
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath rootProject.ext.androidPlugin
+        classpath rootProject.ext.mavenPlugin
+        classpath rootProject.ext.kotlinPlugin
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

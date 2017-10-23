@@ -1,0 +1,26 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    defaultConfig {
+        applicationId "com.ivianuu.xposedextensions.sample"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+    }
+}
+
+dependencies {
+    // Android Support
+    implementation rootProject.ext.supportAppCompat
+
+    // Kotlin
+    implementation rootProject.ext.kotlinStdlib
+
+    // Xposed
+    implementation project(':xposedextensions')
+    provided rootProject.ext.xposed
+}

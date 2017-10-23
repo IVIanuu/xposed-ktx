@@ -42,7 +42,7 @@ inline fun Any.getField(fieldName: String): Any = XposedHelpers.getObjectField(t
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.setField(fieldName: String, value: Any) =
+inline fun Any.setField(fieldName: String, value: Any?) =
         XposedHelpers.setObjectField(this, fieldName, value)
 
 /**

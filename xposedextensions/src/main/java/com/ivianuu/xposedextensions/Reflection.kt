@@ -32,12 +32,56 @@ inline fun ClassLoader.findClass(className: String): Class<*> =
 inline fun ClassLoader.findNullableClass(className: String): Class<*>?
         = XposedHelpers.findClassIfExists(className, this)
 
+/**
+ * Returns a new instance of this class
+ */
+inline fun Class<*>.newInstance(vararg args: Any) =
+        XposedHelpers.newInstance(this, *args)
+
+/**
+ * Returns a new instance of this class
+ */
+inline fun Class<*>.newInstance(parameterTypes: Array<Class<*>>,
+                                vararg args: Any) =
+        XposedHelpers.newInstance(this, parameterTypes, *args)
+
 // FIELDS
 
 /**
  * Returns the field with the name
  */
-inline fun Any.getField(fieldName: String): Any = XposedHelpers.getObjectField(this, fieldName)
+inline fun Any.getField(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+inline fun <T> Any.getFieldAs(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName) as T
+
+/**
+ * Returns the nullable field with the name
+ */
+inline fun Any.getNullableField(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName)
+
+/**
+ * Returns the nullable field with the name
+ */
+inline fun <T> Any.getNullableFieldAs(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName) as T
+
+/**
+ * Returns the additional field with the name
+ */
+inline fun Any.getAdditionalField(fieldName: String) =
+        XposedHelpers.getAdditionalInstanceField(this, fieldName)
+
+/**
+ * Returns the additional field with the name as t
+ */
+inline fun <T> Any.getAdditionalFieldAs(fieldName: String) =
+        getAdditionalField(fieldName)
 
 /**
  * Sets the field with the name to the value
@@ -46,74 +90,76 @@ inline fun Any.setField(fieldName: String, value: Any?) =
         XposedHelpers.setObjectField(this, fieldName, value)
 
 /**
- * Returns the nullable field with the name
+ * Sets the additional field with the name to the value
  */
-inline fun Any.getNullableField(fieldName: String): Any? = XposedHelpers.getObjectField(this, fieldName)
+inline fun Any.setAdditionalField(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalInstanceField(this, fieldName, value)
 
 /**
- * Returns the field with the name as T
+ * Removes the the additional field
  */
-inline fun <T> Any.getFieldAs(fieldName: String) =
-        getField(fieldName) as T
+inline fun Any.removeAdditionalField(fieldName: String) =
+        XposedHelpers.removeAdditionalInstanceField(this, fieldName)
 
 /**
- * Returns the nullable field with the name
+ *  Returns the this reference of the surrounding object
  */
-inline fun <T> Any.getNullableFieldAs(fieldName: String): T? =
-        getNullableField(fieldName) as T?
+fun Any.getSurroundingThis() = XposedHelpers.getSurroundingThis(this)
 
 /**
- * Returns the boolean field with the name
+ *  Returns the this reference of the surrounding object
  */
-inline fun Any.getBooleanField(fieldName: String) = getFieldAs<Boolean>(fieldName)
-
-/**
- * Returns the byte field with the name
- */
-inline fun Any.getByteField(fieldName: String) = getFieldAs<Byte>(fieldName)
-
-/**
- * Returns the char field with the name
- */
-inline fun Any.getCharField(fieldName: String) = getFieldAs<Char>(fieldName)
-
-/**
- * Returns the double field with the name
- */
-inline fun Any.getDoubleField(fieldName: String) = getFieldAs<Double>(fieldName)
-
-/**
- * Returns the float field with the name
- */
-inline fun Any.getFloatField(fieldName: String) = getFieldAs<Float>(fieldName)
-
-/**
- * Returns the int field with the name
- */
-inline fun Any.getIntField(fieldName: String) = getFieldAs<Int>(fieldName)
-
-/**
- * Returns the long field with the name
- */
-inline fun Any.getLongField(fieldName: String) = getFieldAs<Long>(fieldName)
-
-/**
- * Returns the short field with the name
- */
-inline fun Any.getShortField(fieldName: String) = getFieldAs<Short>(fieldName)
-
-/**
- * Returns the string field with the name
- */
-inline fun Any.getStringField(fieldName: String) = getFieldAs<String>(fieldName)
+fun <T> Any.getSurroundingThisAs() = getSurroundingThis() as T
 
 // STATIC FIELDS
 
 /**
  * Returns the field with the name
  */
-inline fun Class<*>.getStaticField(fieldName: String): Any 
+inline fun Class<*>.getStaticField(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+inline fun Any.getStaticField(fieldName: String)
+        = this::class.java.getStaticField(fieldName)
+
+/**
+ * Returns the field with the name
+ */
+inline fun <T> Class<*>.getStaticFieldAs(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun <T> Any.getStaticFieldAs(fieldName: String)
+        = this::class.java.getStaticField(fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun Class<*>.getNullableStaticField(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+inline fun <T> Class<*>.getNullableStaticFieldAs(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this, fieldName) as T?
+
+/**
+ * Returns the additional field with the name
+ */
+inline fun Any.getAdditionalStaticField(fieldName: String) =
+        XposedHelpers.getAdditionalStaticField(this, fieldName)
+
+/**
+ * Returns the additional field with the name as t
+ */
+inline fun <T> Any.getAdditionalStaticFieldAs(fieldName: String) =
+        getAdditionalStaticField(fieldName)
 
 /**
  * Sets the field with the name to the value
@@ -122,76 +168,16 @@ inline fun Class<*>.setStaticField(fieldName: String, value: Any) =
         XposedHelpers.setStaticObjectField(this, fieldName, value)
 
 /**
- * Returns the nullable field with the name
+ * Sets the additional field with the name to the value
  */
-inline fun Class<*>.getStaticNullableField(fieldName: String): Any? =
-        XposedHelpers.getStaticObjectField(this, fieldName)
+inline fun Any.setAdditionalStaticField(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalStaticField(this, fieldName, value)
 
 /**
- * Returns the field with the name as T
+ * Removes the the additional field
  */
-inline fun <T> Class<*>.getStaticFieldAs(fieldName: String) =
-        getStaticField(fieldName) as T
-
-/**
- * Returns the nullable field with the name
- */
-inline fun <T> Class<*>.getStaticNullableFieldAs(fieldName: String) =
-        getStaticNullableField(fieldName) as T
-
-/**
- * Returns the boolean field with the name
- */
-inline fun Class<*>.getStaticBooleanField(fieldName: String) =
-        getStaticFieldAs<Boolean>(fieldName)
-
-/**
- * Returns the byte field with the name
- */
-inline fun Class<*>.getStaticByteField(fieldName: String) =
-        getStaticFieldAs<Byte>(fieldName)
-
-/**
- * Returns the char field with the name
- */
-inline fun Class<*>.getStaticCharField(fieldName: String) =
-        getStaticFieldAs<Char>(fieldName)
-
-/**
- * Returns the double field with the name
- */
-inline fun Class<*>.getStaticDoubleField(fieldName: String) =
-        getStaticFieldAs<Double>(fieldName)
-
-/**
- * Returns the float field with the name
- */
-inline fun Class<*>.getStaticFloatField(fieldName: String) =
-        getStaticFieldAs<Float>(fieldName)
-
-/**
- * Returns the int field with the name
- */
-inline fun Class<*>.getStaticIntField(fieldName: String) =
-        getStaticFieldAs<Int>(fieldName)
-
-/**
- * Returns the long field with the name
- */
-inline fun Class<*>.getStaticLongField(fieldName: String) =
-        getStaticFieldAs<Long>(fieldName)
-
-/**
- * Returns the short field with the name
- */
-inline fun Class<*>.getStaticShortField(fieldName: String) =
-        getStaticFieldAs<Short>(fieldName)
-
-/**
- * Returns the string field with the name
- */
-inline fun Class<*>.getStaticStringField(fieldName: String) =
-        getStaticFieldAs<String>(fieldName)
+inline fun Any.removeAdditionalStaticField(fieldName: String) =
+        XposedHelpers.removeAdditionalStaticField(this, fieldName)
 
 // METHODS
 
@@ -199,7 +185,8 @@ inline fun Class<*>.getStaticStringField(fieldName: String) =
  * Calls the method with the name and the args
  */
 inline fun Any.callMethod(methodName: String,
-                          vararg args: Any) = XposedHelpers.callMethod(this, methodName, *args)
+                          vararg args: Any) =
+        XposedHelpers.callMethod(this, methodName, *args)
 
 /**
  * Calls the method with the name and the args
@@ -220,6 +207,6 @@ inline fun Class<*>.callStaticMethod(methodName: String,
  * Calls the static method with the name and the args
  */
 inline fun Class<*>.callStaticMethod(methodName: String,
-                          parameterTypes: Array<Class<*>>,
-                          vararg args: Any) =
+                                     parameterTypes: Array<Class<*>>,
+                                     vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args)

@@ -42,7 +42,7 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         val clockClass = lpparam.classLoader.findClass(CLOCK)
 
-        clockClass.hookAfterAllMethods("updateClock") {
+        clockClass.afterAllMethods("updateClock") {
             val thiz = it.thisObject as TextView
             logX { "updating clock ${thiz.text}" }
             thiz.text = "Keine Zeit"

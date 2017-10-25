@@ -50,25 +50,13 @@ inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
 /**
  * Returns the field with the name
  */
-inline fun Any.get(fieldName: String) =
-        XposedHelpers.getObjectField(this, fieldName)
-
-/**
- * Returns the field with the name
- */
-inline fun <T> Any.getAs(fieldName: String) =
+inline fun <T> Any.get(fieldName: String) =
         XposedHelpers.getObjectField(this, fieldName) as T
 
 /**
  * Returns the nullable field with the name
  */
-inline fun Any.getOptional(fieldName: String): Any? =
-        XposedHelpers.getObjectField(this, fieldName)
-
-/**
- * Returns the nullable field with the name
- */
-inline fun <T> Any.getOptionalAs(fieldName: String) =
+inline fun <T> Any.getOptional(fieldName: String) =
         XposedHelpers.getObjectField(this, fieldName) as T?
 
 /**
@@ -82,43 +70,25 @@ inline fun Any.set(fieldName: String, value: Any?) =
 /**
  * Returns the field with the name
  */
-inline fun Class<*>.getStatic(fieldName: String)
-        = XposedHelpers.getStaticObjectField(this, fieldName)
-
-/**
- * Returns the field with the name
- */
-inline fun Any.getStatic(fieldName: String)
-        = this::class.java.getStatic(fieldName)
-
-/**
- * Returns the field with the name
- */
-inline fun <T> Class<*>.getStaticAs(fieldName: String)
+inline fun <T> Class<*>.getStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName) as T
 
 /**
  * Returns the field with the name
  */
-inline fun <T> Any.getStaticAs(fieldName: String)
-        = this::class.java.getStatic(fieldName) as T
+inline fun <T> Any.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this::class.java, fieldName) as T
 
 /**
  * Returns the field with the name
  */
-inline fun Class<*>.getOptionalStatic(fieldName: String): Any?
-        = XposedHelpers.getStaticObjectField(this, fieldName)
-
-/**
- * Returns the field with the name
- */
-inline fun <T> Class<*>.getOptionalStaticAs(fieldName: String)
+inline fun <T> Class<*>.getOptionalStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName) as T?
 
 /**
  * Sets the field with the name to the value
  */
-inline fun Class<*>.setStatic(fieldName: String, value: Any) =
+inline fun Class<*>.setStatic(fieldName: String, value: Any?) =
         XposedHelpers.setStaticObjectField(this, fieldName, value)
 
 // METHODS

@@ -158,9 +158,9 @@ fun Class<*>.hook(methodName: String = "",
     val hook = MethodHook()
     init(hook)
     return if (methodName.isEmpty()) {
-        XposedHelpers.findAndHookConstructor(this, args, hook.build())
+        XposedHelpers.findAndHookConstructor(this, *args, hook.build())
     } else {
-        XposedHelpers.findAndHookMethod(this, methodName, args, hook.build())
+        XposedHelpers.findAndHookMethod(this, methodName, *args, hook.build())
     }
 }
 
@@ -195,10 +195,10 @@ fun ClassLoader.hook(className: String,
 
     return if (methodName.isEmpty()) {
         XposedHelpers.findAndHookConstructor(
-                className, this, args, hook.build())
+                className, this, *args, hook.build())
     } else {
         XposedHelpers.findAndHookMethod(
-                className, this, methodName, args, hook.build())
+                className, this, methodName, *args, hook.build())
     }
 }
 

@@ -83,36 +83,54 @@ class MethodHook {
     }
 }
 
-// CONSTRUCTORS
-
 /**
- * Hooks all constructors
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
  */
-fun Class<*>.hookAllConstructors(init: MethodHook.() -> Unit): Set<Unhook> {
+fun Class<*>.hook(methodName: String = "",
+                  init: MethodHook.() -> Unit): Set<Unhook> {
     val hook = MethodHook()
     init(hook)
-    return XposedBridge.hookAllConstructors(this, hook.build())
+    return if (methodName.isEmpty()) {
+        XposedBridge.hookAllConstructors(this, hook.build())
+    } else {
+        XposedBridge.hookAllMethods(this, methodName, hook.build())
+    }
 }
 
 /**
- * Hooks the constructor
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
  */
-fun Class<*>.hookConstructor(vararg args: Any,
-                             init: MethodHook.() -> Unit): Unhook {
+fun Class<*>.hook(methodName: String = "",
+                  vararg args: Any,
+                  init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
-    return XposedHelpers.findAndHookConstructor(this, *args, hook.build())
+    return if (methodName.isEmpty()) {
+        XposedHelpers.findAndHookConstructor(this, methodName, *args, hook.build())
+    } else {
+        XposedHelpers.findAndHookMethod(this, methodName, *args, hook.build())
+    }
 }
 
 /**
- * Hooks the constructor
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
  */
-fun ClassLoader.hookConstructor(className: String,
-                                vararg args: Any,
-                                init: MethodHook.() -> Unit): Unhook {
+fun ClassLoader.hook(className: String,
+                     methodName: String = "",
+                     vararg args: Any,
+                     init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
-    return XposedHelpers.findAndHookConstructor(className, this, *args, hook.build())
+    return if (methodName.isEmpty()) {
+        XposedHelpers.findAndHookMethod(
+                className, this, methodName, *args, hook.build())
+    } else {
+        XposedHelpers.findAndHookConstructor(
+                className, this, methodName, *args, hook.build())
+    }
 }
 
 /**
@@ -122,42 +140,6 @@ fun Constructor<*>.hook(init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedBridge.hookMethod(this, hook.build())
-}
-
-// METHODS
-
-/**
- * Hooks all methods
- */
-fun Class<*>.hookAllMethods(methodName: String,
-                            init: MethodHook.() -> Unit): Set<Unhook> {
-    val hook = MethodHook()
-    init(hook)
-    return XposedBridge.hookAllMethods(this, methodName, hook.build())
-}
-
-/**
- * Hooks the method
- */
-fun Class<*>.hookMethod(methodName: String,
-                        vararg args: Any,
-                        init: MethodHook.() -> Unit): Unhook {
-    val hook = MethodHook()
-    init(hook)
-    return XposedHelpers.findAndHookMethod(this, methodName, *args, hook.build())
-}
-
-/**
- * Hooks the method
- */
-fun ClassLoader.hookMethod(className: String,
-                           methodName: String,
-                           vararg args: Any,
-                           init: MethodHook.() -> Unit): Unhook {
-    val hook = MethodHook()
-    init(hook)
-    return XposedHelpers.findAndHookConstructor(
-            className, this, methodName, *args, hook.build())
 }
 
 /**

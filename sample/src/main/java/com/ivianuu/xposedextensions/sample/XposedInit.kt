@@ -37,9 +37,9 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName != SYSTEM_UI) return
 
-        val clockClass = lpparam.classLoader.findClass(CLOCK)
+        val clockClass = lpparam.classLoader.find(CLOCK)
 
-        clockClass.hookAllMethods("updateClock") {
+        clockClass.hook("updateClock") {
             priority { XC_MethodHook.PRIORITY_HIGHEST }
             before { logX { "before update clock" } }
             after {

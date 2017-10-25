@@ -56,21 +56,12 @@ class MethodHook {
     }
 
     internal fun build(): XC_MethodHook {
-        check(before == null && after == null && replace == null) {
-            "one of before, after or replace must be set"
-        }
         return if (replace != null) {
-            check(before != null || after != null) {
-                "before and after has no effect while replacing is set"
-            }
             object : XC_MethodReplacement() {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =
                         replace?.invoke(Param(param))
             }
         } else {
-            check(before == null || after == null) {
-                "at least one of before or after must be set"
-            }
             object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     before?.let { it(Param(param)) }

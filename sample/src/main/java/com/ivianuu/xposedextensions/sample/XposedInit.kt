@@ -16,13 +16,11 @@
 
 package com.ivianuu.xposedextensions.sample
 
-import android.graphics.Color
-import android.service.notification.StatusBarNotification
-import android.view.MotionEvent
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.widget.TextView
 import de.robv.android.xposed.*
+import de.robv.android.xposed.callbacks.XCallback
 
 
 /**
@@ -43,8 +41,7 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
             priority { XC_MethodHook.PRIORITY_HIGHEST }
             before { logX { "before update clock" } }
             after {
-                val thiz = it.thisObject as TextView
-                thiz.text = "Keine Zeit"
+                it.instance<TextView>().text = "Keine Zeit"
                 logX { "after update clock" }
             }
         }

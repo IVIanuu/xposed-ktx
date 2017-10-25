@@ -31,9 +31,9 @@ import java.lang.reflect.Method
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
-    private var before: ((XC_MethodHook.MethodHookParam) -> Unit)? = null
-    private var after: ((XC_MethodHook.MethodHookParam) -> Unit)? = null
-    private var replace: ((XC_MethodHook.MethodHookParam) -> Any?)? = null
+    private var before: ((Param) -> Unit)? = null
+    private var after: ((Param) -> Unit)? = null
+    private var replace: ((Param) -> Any?)? = null
     
     fun priority(priority: Int) {
         this.priority = priority
@@ -43,15 +43,15 @@ class MethodHook {
         this.priority = action()
     }
 
-    fun before(action: (XC_MethodHook.MethodHookParam) -> Unit) {
+    fun before(action: (Param) -> Unit) {
         this.before = action
     }
 
-    fun after(action: (XC_MethodHook.MethodHookParam) -> Unit) {
+    fun after(action: (Param) -> Unit) {
         this.after = action
     }
 
-    fun replace(action: (XC_MethodHook.MethodHookParam) -> Any?) {
+    fun replace(action: (Param) -> Any?) {
         this.replace = action
     }
 
@@ -65,7 +65,7 @@ class MethodHook {
             }
             object : XC_MethodReplacement() {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =
-                        replace?.invoke(param)
+                        replace?.invoke(Param(param))
             }
         } else {
             check(before == null || after == null) {
@@ -73,14 +73,43 @@ class MethodHook {
             }
             object : XC_MethodHook() {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    before?.let { it(param) }
+                    before?.let { it(Param(param)) }
                 }
                 override fun afterHookedMethod(param: MethodHookParam) {
-                    after?.let { it(param) }
+                    after?.let { it(Param(param)) }
                 }
             }
         }
     }
+}
+
+/**
+ * Wraps a method hook param
+ */
+class Param(private val value: MethodHookParam) {
+
+    fun method() = value.method
+
+    fun args() = value.args
+
+    fun result() = value.result
+
+    fun result(result: Any?) {
+        value.result = result
+    }
+
+    fun exception() = value.throwable
+
+    fun exception(exception: Throwable?) {
+        value.throwable = exception
+    }
+
+    fun returns(): Any? = value.resultOrThrowable
+
+    /**
+     * Returns the instance as t
+     */
+    fun <T> instance() = value.thisObject as T
 }
 
 /**

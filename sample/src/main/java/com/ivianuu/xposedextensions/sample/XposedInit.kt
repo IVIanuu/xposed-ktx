@@ -42,6 +42,7 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
             before { logX { "before update clock" } }
             after {
                 it.instance<TextView>().text = "Keine Zeit"
+
                 logX { "after update clock" }
             }
         }

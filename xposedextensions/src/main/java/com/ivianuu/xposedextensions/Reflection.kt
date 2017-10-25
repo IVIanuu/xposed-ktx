@@ -65,6 +65,10 @@ inline fun <T> Any.getOptional(fieldName: String) =
 inline fun Any.set(fieldName: String, value: Any?) =
         XposedHelpers.setObjectField(this, fieldName, value)
 
+inline fun <T> Any.applyOn(fieldName: String, block: T.() -> Unit) {
+    get<T>(fieldName).apply(block)
+}
+
 // STATIC FIELDS
 
 /**

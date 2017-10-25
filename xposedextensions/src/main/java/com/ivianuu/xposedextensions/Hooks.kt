@@ -89,13 +89,13 @@ class MethodHook {
         doNothingSet -> XC_MethodReplacement.DO_NOTHING
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
         replaceSet -> {
-            object : XC_MethodReplacement() {
+            object : XC_MethodReplacement(priority) {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =
                         replace?.invoke(Param(param))
             }
         }
         beforeSet || afterSet -> {
-            object : XC_MethodHook() {
+            object : XC_MethodHook(priority) {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     before?.let { it(Param(param)) }
                 }

@@ -25,6 +25,9 @@ import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
 
+/**
+ * Dsl builder to build method hooks
+ */
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
@@ -58,7 +61,7 @@ class MethodHook {
         }
         return if (replace != null) {
             check(before != null || after != null) {
-                "before or after has no effect while replacing is set"
+                "before and after has no effect while replacing is set"
             }
             object : XC_MethodReplacement() {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =

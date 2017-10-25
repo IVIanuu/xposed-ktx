@@ -23,13 +23,13 @@ import de.robv.android.xposed.XposedHelpers
 /**
  * Returns the class with the name
  */
-inline fun ClassLoader.findClass(className: String): Class<*> =
+inline fun ClassLoader.find(className: String): Class<*> =
         XposedHelpers.findClass(className, this)
 
 /**
  * Returns the class with the name or null
  */
-inline fun ClassLoader.findNullableClass(className: String): Class<*>?
+inline fun ClassLoader.findOptional(className: String): Class<*>?
         = XposedHelpers.findClassIfExists(className, this)
 
 /**
@@ -42,7 +42,7 @@ inline fun Class<*>.new(vararg args: Any) =
  * Returns a new instance of this class
  */
 inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
-                                vararg args: Any) =
+                        vararg args: Any) =
         XposedHelpers.newInstance(this, parameterTypes, *args)
 
 // FIELDS
@@ -184,29 +184,29 @@ inline fun Any.removeAdditionalStaticField(fieldName: String) =
 /**
  * Calls the method with the name and the args
  */
-inline fun Any.callMethod(methodName: String,
-                          vararg args: Any) =
+inline fun Any.invoke(methodName: String,
+                      vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, *args)
 
 /**
  * Calls the method with the name and the args
  */
-inline fun Any.callMethod(methodName: String,
-                          parameterTypes: Array<Class<*>>,
-                          vararg args: Any) =
+inline fun Any.invoke(methodName: String,
+                      parameterTypes: Array<Class<*>>,
+                      vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, parameterTypes, *args)
 
 /**
  * Calls the static method with the name and the args
  */
-inline fun Class<*>.callStaticMethod(methodName: String,
-                                     vararg args: Any) =
+inline fun Class<*>.invokeStatic(methodName: String,
+                                 vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, *args)
 
 /**
  * Calls the static method with the name and the args
  */
-inline fun Class<*>.callStaticMethod(methodName: String,
-                                     parameterTypes: Array<Class<*>>,
-                                     vararg args: Any) =
+inline fun Class<*>.invokeStatic(methodName: String,
+                                 parameterTypes: Array<Class<*>>,
+                                 vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args)

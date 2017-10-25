@@ -165,26 +165,6 @@ fun Class<*>.hook(methodName: String = "",
 }
 
 /**
- * Hooks all methods with name
- * If the name is empty it will the constructors
- */
-fun ClassLoader.hook(className: String,
-                     methodName: String = "",
-                     vararg args: Any,
-                     init: MethodHook.() -> Unit): Unhook {
-    val hook = MethodHook()
-    init(hook)
-
-    return if (methodName.isEmpty()) {
-        XposedHelpers.findAndHookConstructor(
-                className, this, *args, hook.build())
-    } else {
-        XposedHelpers.findAndHookMethod(
-                className, this, methodName, *args, hook.build())
-    }
-}
-
-/**
  * Hooks this constructor
  */
 fun Constructor<*>.hook(init: MethodHook.() -> Unit): Unhook {

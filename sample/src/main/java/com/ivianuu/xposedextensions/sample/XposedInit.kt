@@ -18,14 +18,11 @@ package com.ivianuu.xposedextensions.sample
 
 import android.graphics.Color
 import android.service.notification.StatusBarNotification
+import android.view.MotionEvent
 import com.ivianuu.xposedextensions.*
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.IXposedHookZygoteInit
-import de.robv.android.xposed.XposedBridge
-import de.robv.android.xposed.XposedHelpers
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.widget.TextView
-
+import de.robv.android.xposed.*
 
 
 /**
@@ -42,10 +39,14 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         val clockClass = lpparam.classLoader.findClass(CLOCK)
 
-        clockClass.afterAllMethods("updateClock") {
-            val thiz = it.thisObject as TextView
-            logX { "updating clock ${thiz.text}" }
-            thiz.text = "Keine Zeit"
+        clockClass.hookAllMethods("updateClock") {
+            priority { XC_MethodHook.PRIORITY_HIGHEST }
+            before { logX { "before update clock" } }
+            after {
+                val thiz = it.thisObject as TextView
+                thiz.text = "Keine Zeit"
+                logX { "after update clock" }
+            }
         }
     }
 

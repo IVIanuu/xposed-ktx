@@ -35,13 +35,13 @@ inline fun ClassLoader.findNullableClass(className: String): Class<*>?
 /**
  * Returns a new instance of this class
  */
-inline fun Class<*>.newInstance(vararg args: Any) =
+inline fun Class<*>.new(vararg args: Any) =
         XposedHelpers.newInstance(this, *args)
 
 /**
  * Returns a new instance of this class
  */
-inline fun Class<*>.newInstance(parameterTypes: Array<Class<*>>,
+inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
                                 vararg args: Any) =
         XposedHelpers.newInstance(this, parameterTypes, *args)
 

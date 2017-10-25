@@ -88,22 +88,18 @@ class MethodHook {
  */
 class Param(private val value: MethodHookParam) {
 
-    fun method() = value.method
+    val method = value.method
+    val args = value.args
+    var result: Any?
+        get() = value.result
+        set(value) { this.value.result = value }
+    var exception: Throwable?
+        get() = value.throwable
+        set(value) { this.value.throwable = value }
 
-    fun args() = value.args
-
-    fun result() = value.result
-
-    fun result(result: Any?) {
-        value.result = result
-    }
-
-    fun exception() = value.throwable
-
-    fun exception(exception: Throwable?) {
-        value.throwable = exception
-    }
-
+    /**
+     * Returns the return value or throws the exception
+     */
     fun returns(): Any? = value.resultOrThrowable
 
     /**

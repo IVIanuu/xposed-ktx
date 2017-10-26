@@ -42,9 +42,24 @@ inline fun Class<*>.new(vararg args: Any) =
 /**
  * Returns a new instance of this class
  */
+@JvmName("newAs")
+inline fun <T> Class<T>.new(vararg args: Any) =
+        XposedHelpers.newInstance(this, *args) as T
+
+/**
+ * Returns a new instance of this class
+ */
 inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
                         vararg args: Any) =
         XposedHelpers.newInstance(this, parameterTypes, *args)
+
+/**
+ * Returns a new instance of this class
+ */
+@JvmName("newAs")
+inline fun <T> Class<T>.new(parameterTypes: Array<Class<*>>,
+                        vararg args: Any) =
+        XposedHelpers.newInstance(this, parameterTypes, *args) as T
 
 /**
  * Returns a new instance of this class
@@ -55,21 +70,50 @@ inline fun KClass<*>.new(vararg args: Any) =
 /**
  * Returns a new instance of this class
  */
+@JvmName("newAs")
+inline fun <T : Any> KClass<T>.new(vararg args: Any) =
+        XposedHelpers.newInstance(this.java, *args) as T
+
+/**
+ * Returns a new instance of this class
+ */
 inline fun KClass<*>.new(parameterTypes: Array<Class<*>>,
-                        vararg args: Any) =
+                         vararg args: Any) =
         XposedHelpers.newInstance(this.java, parameterTypes, *args)
+
+/**
+ * Returns a new instance of this class
+ */
+@JvmName("newAs")
+inline fun <T : Any> KClass<T>.new(parameterTypes: Array<Class<*>>,
+                                   vararg args: Any) =
+        XposedHelpers.newInstance(this.java, parameterTypes, *args) as T
 
 // FIELDS
 
 /**
  * Returns the field with the name
  */
+inline fun Any.get(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAs")
 inline fun <T> Any.get(fieldName: String) =
         XposedHelpers.getObjectField(this, fieldName) as T
 
 /**
  * Returns the nullable field with the name
  */
+inline fun Any.getOptional(fieldName: String): Any? =
+        XposedHelpers.getObjectField(this, fieldName)
+
+/**
+ * Returns the nullable field with the name
+ */
+@JvmName("getOptionalAs")
 inline fun <T> Any.getOptional(fieldName: String) =
         XposedHelpers.getObjectField(this, fieldName) as T?
 
@@ -79,47 +123,78 @@ inline fun <T> Any.getOptional(fieldName: String) =
 inline fun Any.set(fieldName: String, value: Any?) =
         XposedHelpers.setObjectField(this, fieldName, value)
 
-inline fun <T> Any.applyOn(fieldName: String, block: T.() -> Unit) {
-    get<T>(fieldName).apply(block)
-}
-
 // STATIC FIELDS
 
 /**
  * Returns the field with the name
  */
+inline fun Class<*>.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getStaticAs")
 inline fun <T> Class<*>.getStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName) as T
 
 /**
  * Returns the field with the name
  */
+inline fun KClass<*>.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getStaticAs")
 inline fun <T> KClass<*>.getStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this.java, fieldName) as T
 
 /**
  * Returns the field with the name
  */
+inline fun Any.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this::class.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getStaticAs")
 inline fun <T> Any.getStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this::class.java, fieldName) as T
 
 /**
  * Returns the field with the name
  */
+inline fun Class<*>.getOptionalStatic(fieldName: String): Any?
+        = XposedHelpers.getStaticObjectField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getOptionalStaticAs")
 inline fun <T> Class<*>.getOptionalStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName) as T?
+
+/**
+ * Returns the field with the name
+ */
+inline fun KClass<*>.getOptionalStatic(fieldName: String): Any?
+        = XposedHelpers.getStaticObjectField(this.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getOptionalStaticAs")
+inline fun <T> KClass<*>.getOptionalStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this.java, fieldName) as T?
 
 /**
  * Sets the field with the name to the value
  */
 inline fun Class<*>.setStatic(fieldName: String, value: Any?) =
         XposedHelpers.setStaticObjectField(this, fieldName, value)
-
-/**
- * Returns the field with the name
- */
-inline fun <T> KClass<*>.getOptionalStatic(fieldName: String)
-        = XposedHelpers.getStaticObjectField(this.java, fieldName) as T?
 
 /**
  * Sets the field with the name to the value
@@ -132,44 +207,95 @@ inline fun KClass<*>.setStatic(fieldName: String, value: Any?) =
 /**
  * Calls the method with the name and the args
  */
+inline fun Any.invoke(methodName: String,
+                      vararg args: Any): Any =
+        XposedHelpers.callMethod(this, methodName, *args)
+
+/**
+ * Calls the method with the name and the args
+ */
+@JvmName("invokeAs")
 inline fun <T> Any.invoke(methodName: String,
-                      vararg args: Any) =
+                          vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, *args) as T
 
 /**
  * Calls the method with the name and the args
  */
+inline fun Any.invoke(methodName: String,
+                          parameterTypes: Array<Class<*>>,
+                          vararg args: Any) =
+        XposedHelpers.callMethod(this, methodName, parameterTypes, *args)
+
+/**
+ * Calls the method with the name and the args
+ */
+@JvmName("invokeAs")
 inline fun <T> Any.invoke(methodName: String,
-                      parameterTypes: Array<Class<*>>,
-                      vararg args: Any) =
+                          parameterTypes: Array<Class<*>>,
+                          vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, parameterTypes, *args) as T
 
 /**
  * Calls the static method with the name and the args
  */
+inline fun Class<*>.invokeStatic(methodName: String,
+                                     vararg args: Any) =
+        XposedHelpers.callStaticMethod(this, methodName, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
 inline fun <T> Class<*>.invokeStatic(methodName: String,
-                                 vararg args: Any) =
+                                     vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, *args) as T
 
 /**
  * Calls the static method with the name and the args
  */
+inline fun Class<*>.invokeStatic(methodName: String,
+                                     parameterTypes: Array<Class<*>>,
+                                     vararg args: Any) =
+        XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
 inline fun <T> Class<*>.invokeStatic(methodName: String,
-                                 parameterTypes: Array<Class<*>>,
-                                 vararg args: Any) =
+                                     parameterTypes: Array<Class<*>>,
+                                     vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args) as T
 
 /**
  * Calls the static method with the name and the args
  */
+inline fun KClass<*>.invokeStatic(methodName: String,
+                                  vararg args: Any) =
+        XposedHelpers.callStaticMethod(this.java, methodName, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
 inline fun <T> KClass<*>.invokeStatic(methodName: String,
-                                 vararg args: Any) =
+                                      vararg args: Any) =
         XposedHelpers.callStaticMethod(this.java, methodName, *args) as T
 
 /**
  * Calls the static method with the name and the args
  */
+inline fun KClass<*>.invokeStatic(methodName: String,
+                                      parameterTypes: Array<Class<*>>,
+                                      vararg args: Any) =
+        XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
 inline fun <T> KClass<*>.invokeStatic(methodName: String,
-                                 parameterTypes: Array<Class<*>>,
-                                 vararg args: Any) =
+                                      parameterTypes: Array<Class<*>>,
+                                      vararg args: Any) =
         XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args) as T

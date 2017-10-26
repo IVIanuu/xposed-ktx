@@ -167,27 +167,27 @@ inline fun <T> Any.getStatic(fieldName: String)
 /**
  * Returns the field with the name
  */
-inline fun Class<*>.getOptionalStatic(fieldName: String): Any?
+inline fun Class<*>.getStaticOptional(fieldName: String): Any?
         = XposedHelpers.getStaticObjectField(this, fieldName)
 
 /**
  * Returns the field with the name
  */
-@JvmName("getOptionalStaticAs")
-inline fun <T> Class<*>.getOptionalStatic(fieldName: String)
+@JvmName("getStaticOptionalAs")
+inline fun <T> Class<*>.getStaticOptional(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName) as T?
 
 /**
  * Returns the field with the name
  */
-inline fun KClass<*>.getOptionalStatic(fieldName: String): Any?
+inline fun KClass<*>.getStaticOptional(fieldName: String): Any?
         = XposedHelpers.getStaticObjectField(this.java, fieldName)
 
 /**
  * Returns the field with the name
  */
-@JvmName("getOptionalStaticAs")
-inline fun <T> KClass<*>.getOptionalStatic(fieldName: String)
+@JvmName("getStaticOptionalAs")
+inline fun <T> KClass<*>.getStaticOptional(fieldName: String)
         = XposedHelpers.getStaticObjectField(this.java, fieldName) as T?
 
 /**
@@ -201,6 +201,149 @@ inline fun Class<*>.setStatic(fieldName: String, value: Any?) =
  */
 inline fun KClass<*>.setStatic(fieldName: String, value: Any?) =
         XposedHelpers.setStaticObjectField(this.java, fieldName, value)
+
+// ADDITIONAL
+
+/**
+ * Returns the field with the name
+ */
+inline fun Any.getAdditional(fieldName: String) =
+        XposedHelpers.getAdditionalInstanceField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalAs")
+inline fun <T> Any.getAdditional(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName) as T
+
+/**
+ * Returns the nullable field with the name
+ */
+inline fun Any.getAdditionalOptional(fieldName: String): Any? =
+        XposedHelpers.getObjectField(this, fieldName)
+
+/**
+ * Returns the nullable field with the name
+ */
+@JvmName("getAdditionalOptionalAs")
+inline fun <T> Any.getAdditionalOptional(fieldName: String) =
+        XposedHelpers.getObjectField(this, fieldName) as T?
+
+/**
+ * Sets the field with the name to the value
+ */
+inline fun Any.setAdditional(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalInstanceField(this, fieldName, value)
+
+/**
+ * Removes the additional field with the name
+ */
+inline fun Any.removeAdditional(fieldName: String) =
+        XposedHelpers.removeAdditionalInstanceField(this, fieldName)
+
+// ADDITIONAL STATIC
+
+/**
+ * Returns the field with the name
+ */
+inline fun Class<*>.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticAs")
+inline fun <T> Class<*>.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun KClass<*>.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticAs")
+inline fun <T> KClass<*>.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this.java, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun Any.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticAs")
+inline fun <T> Any.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun Class<*>.getAdditionalStaticOptional(fieldName: String): Any?
+        = XposedHelpers.getAdditionalStaticField(this, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticOptionalAs")
+inline fun <T> Class<*>.getAdditionalStaticOptional(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this, fieldName) as T?
+
+/**
+ * Returns the field with the name
+ */
+inline fun KClass<*>.getAdditionalStaticOptional(fieldName: String): Any?
+        = XposedHelpers.getAdditionalStaticField(this.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticOptionalAs")
+inline fun <T> KClass<*>.getAdditionalStaticOptional(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this.java, fieldName) as T?
+
+/**
+ * Sets the field with the name to the value
+ */
+inline fun Any.setAdditionalStatic(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalStaticField(this::class.java, fieldName, value)
+
+/**
+ * Sets the field with the name to the value
+ */
+inline fun Class<*>.setAdditionalStatic(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalStaticField(this, fieldName, value)
+
+/**
+ * Sets the field with the name to the value
+ */
+inline fun KClass<*>.setAdditionalStatic(fieldName: String, value: Any?) =
+        XposedHelpers.setAdditionalStaticField(this.java, fieldName, value)
+
+/**
+ * Removes the additional field with the name
+ */
+inline fun Any.removeAdditionalStatic(fieldName: String) =
+        XposedHelpers.removeAdditionalStaticField(this::class.java, fieldName)
+
+/**
+ * Removes the additional field with the name
+ */
+inline fun Class<*>.removeAdditionalStatic(fieldName: String) =
+        XposedHelpers.removeAdditionalStaticField(this, fieldName)
+
+/**
+ * Removes the additional field with the name
+ */
+inline fun KClass<*>.removeAdditionalStatic(fieldName: String) =
+        XposedHelpers.removeAdditionalStaticField(this.java, fieldName)
 
 // METHODS
 

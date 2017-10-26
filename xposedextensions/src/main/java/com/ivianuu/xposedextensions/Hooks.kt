@@ -139,14 +139,27 @@ class Param(private val value: MethodHookParam) {
     fun <T> instance() = value.thisObject as T
 }
 
-
+/**
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
+ */
+fun Class<*>.hook(methodName: String = "",
+                  init: MethodHook.() -> Unit): Set<Unhook> {
+    val hook = MethodHook()
+    init(hook)
+    return if (methodName.isEmpty()) {
+        XposedBridge.hookAllConstructors(this, hook.build())
+    } else {
+        XposedBridge.hookAllMethods(this, methodName, hook.build())
+    }
+}
 
 /**
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
 fun Class<*>.hook(methodName: String = "",
-                  vararg args: Any = emptyArray(),
+                  vararg args: Any,
                   init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
@@ -162,8 +175,23 @@ fun Class<*>.hook(methodName: String = "",
  * If the name is empty it will the constructors
  */
 fun KClass<*>.hook(methodName: String = "",
-                  vararg args: Any = emptyArray(),
-                  init: MethodHook.() -> Unit): Unhook {
+                   init: MethodHook.() -> Unit): Set<Unhook> {
+    val hook = MethodHook()
+    init(hook)
+    return if (methodName.isEmpty()) {
+        XposedBridge.hookAllConstructors(this.java, hook.build())
+    } else {
+        XposedBridge.hookAllMethods(this.java, methodName, hook.build())
+    }
+}
+
+/**
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
+ */
+fun KClass<*>.hook(methodName: String = "",
+                   vararg args: Any,
+                   init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
     return if (methodName.isEmpty()) {

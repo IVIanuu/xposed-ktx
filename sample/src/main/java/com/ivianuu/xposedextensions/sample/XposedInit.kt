@@ -38,6 +38,8 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         val clockClass = lpparam.classLoader.find(CLOCK)
 
+        clockClass.invoke("", "")
+
         clockClass.hook("updateClock") {
             priority { XC_MethodHook.PRIORITY_HIGHEST }
             before { logX { "before update clock" } }

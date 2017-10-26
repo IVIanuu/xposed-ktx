@@ -208,7 +208,7 @@ inline fun KClass<*>.setStatic(fieldName: String, value: Any?) =
  * Calls the method with the name and the args
  */
 inline fun Any.invoke(methodName: String,
-                      vararg args: Any): Any =
+                      vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, *args)
 
 /**
@@ -298,4 +298,4 @@ inline fun KClass<*>.invokeStatic(methodName: String,
 inline fun <T> KClass<*>.invokeStatic(methodName: String,
                                       parameterTypes: Array<Class<*>>,
                                       vararg args: Any) =
-        XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args) as T
+        XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args) as T?

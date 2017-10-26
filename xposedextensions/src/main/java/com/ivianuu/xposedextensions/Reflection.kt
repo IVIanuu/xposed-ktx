@@ -215,20 +215,20 @@ inline fun Any.getAdditional(fieldName: String) =
  */
 @JvmName("getAdditionalAs")
 inline fun <T> Any.getAdditional(fieldName: String) =
-        XposedHelpers.getObjectField(this, fieldName) as T
+        XposedHelpers.getAdditionalInstanceField(this, fieldName) as T
 
 /**
  * Returns the nullable field with the name
  */
 inline fun Any.getAdditionalOptional(fieldName: String): Any? =
-        XposedHelpers.getObjectField(this, fieldName)
+        XposedHelpers.getAdditionalInstanceField(this, fieldName)
 
 /**
  * Returns the nullable field with the name
  */
 @JvmName("getAdditionalOptionalAs")
 inline fun <T> Any.getAdditionalOptional(fieldName: String) =
-        XposedHelpers.getObjectField(this, fieldName) as T?
+        XposedHelpers.getAdditionalInstanceField(this, fieldName) as T?
 
 /**
  * Sets the field with the name to the value

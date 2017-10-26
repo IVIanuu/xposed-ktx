@@ -16,6 +16,7 @@
 
 package com.ivianuu.xposedextensions.sample
 
+import android.app.Activity
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.widget.TextView

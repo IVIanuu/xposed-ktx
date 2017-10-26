@@ -24,6 +24,7 @@ import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.Constructor
 import java.lang.reflect.Method
+import kotlin.reflect.KClass
 
 /**
  * Dsl builder to build method hooks
@@ -161,6 +162,37 @@ fun Class<*>.hook(methodName: String = "",
         XposedHelpers.findAndHookConstructor(this, *args, hook.build())
     } else {
         XposedHelpers.findAndHookMethod(this, methodName, *args, hook.build())
+    }
+}
+
+/**
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
+ */
+fun KClass<*>.hook(methodName: String = "",
+                  init: MethodHook.() -> Unit): Set<Unhook> {
+    val hook = MethodHook()
+    init(hook)
+    return if (methodName.isEmpty()) {
+        XposedBridge.hookAllConstructors(this.java, hook.build())
+    } else {
+        XposedBridge.hookAllMethods(this.java, methodName, hook.build())
+    }
+}
+
+/**
+ * Hooks all methods with name
+ * If the name is empty it will the constructors
+ */
+fun KClass<*>.hook(methodName: String = "",
+                  vararg args: Any,
+                  init: MethodHook.() -> Unit): Unhook {
+    val hook = MethodHook()
+    init(hook)
+    return if (methodName.isEmpty()) {
+        XposedHelpers.findAndHookConstructor(this.java, *args, hook.build())
+    } else {
+        XposedHelpers.findAndHookMethod(this.java, methodName, *args, hook.build())
     }
 }
 

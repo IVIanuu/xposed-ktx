@@ -36,20 +36,7 @@ inline fun ClassLoader.findOptional(className: String): Class<*>?
 /**
  * Returns a new instance of this class
  */
-inline fun Class<*>.new(vararg args: Any) =
-        XposedHelpers.newInstance(this, *args)
-
-/**
- * Returns a new instance of this class
- */
-@JvmName("newAs")
-inline fun <T> Class<T>.new(vararg args: Any) =
-        XposedHelpers.newInstance(this, *args) as T
-
-/**
- * Returns a new instance of this class
- */
-inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
+inline fun Class<*>.new(parameterTypes: Array<Class<*>> = emptyArray(),
                         vararg args: Any) =
         XposedHelpers.newInstance(this, parameterTypes, *args)
 
@@ -57,27 +44,14 @@ inline fun Class<*>.new(parameterTypes: Array<Class<*>>,
  * Returns a new instance of this class
  */
 @JvmName("newAs")
-inline fun <T> Class<T>.new(parameterTypes: Array<Class<*>>,
-                        vararg args: Any) =
+inline fun <T> Class<T>.new(parameterTypes: Array<Class<*>> = emptyArray(),
+                            vararg args: Any) =
         XposedHelpers.newInstance(this, parameterTypes, *args) as T
 
 /**
  * Returns a new instance of this class
  */
-inline fun KClass<*>.new(vararg args: Any) =
-        XposedHelpers.newInstance(this.java, *args)
-
-/**
- * Returns a new instance of this class
- */
-@JvmName("newAs")
-inline fun <T : Any> KClass<T>.new(vararg args: Any) =
-        XposedHelpers.newInstance(this.java, *args) as T
-
-/**
- * Returns a new instance of this class
- */
-inline fun KClass<*>.new(parameterTypes: Array<Class<*>>,
+inline fun KClass<*>.new(parameterTypes: Array<Class<*>> = emptyArray(),
                          vararg args: Any) =
         XposedHelpers.newInstance(this.java, parameterTypes, *args)
 
@@ -85,7 +59,7 @@ inline fun KClass<*>.new(parameterTypes: Array<Class<*>>,
  * Returns a new instance of this class
  */
 @JvmName("newAs")
-inline fun <T : Any> KClass<T>.new(parameterTypes: Array<Class<*>>,
+inline fun <T : Any> KClass<T>.new(parameterTypes: Array<Class<*>> = emptyArray(),
                                    vararg args: Any) =
         XposedHelpers.newInstance(this.java, parameterTypes, *args) as T
 
@@ -208,23 +182,8 @@ inline fun KClass<*>.setStatic(fieldName: String, value: Any?) =
  * Calls the method with the name and the args
  */
 inline fun Any.invoke(methodName: String,
+                      parameterTypes: Array<Class<*>> = emptyArray(),
                       vararg args: Any) =
-        XposedHelpers.callMethod(this, methodName, *args)
-
-/**
- * Calls the method with the name and the args
- */
-@JvmName("invokeAs")
-inline fun <T> Any.invoke(methodName: String,
-                          vararg args: Any) =
-        XposedHelpers.callMethod(this, methodName, *args) as T
-
-/**
- * Calls the method with the name and the args
- */
-inline fun Any.invoke(methodName: String,
-                          parameterTypes: Array<Class<*>>,
-                          vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, parameterTypes, *args)
 
 /**
@@ -232,7 +191,7 @@ inline fun Any.invoke(methodName: String,
  */
 @JvmName("invokeAs")
 inline fun <T> Any.invoke(methodName: String,
-                          parameterTypes: Array<Class<*>>,
+                          parameterTypes: Array<Class<*>> = emptyArray(),
                           vararg args: Any) =
         XposedHelpers.callMethod(this, methodName, parameterTypes, *args) as T
 
@@ -240,23 +199,8 @@ inline fun <T> Any.invoke(methodName: String,
  * Calls the static method with the name and the args
  */
 inline fun Class<*>.invokeStatic(methodName: String,
+                                 parameterTypes: Array<Class<*>> = emptyArray(),
                                  vararg args: Any) =
-        XposedHelpers.callStaticMethod(this, methodName, *args)
-
-/**
- * Calls the static method with the name and the args
- */
-@JvmName("invokeStaticAs")
-inline fun <T> Class<*>.invokeStatic(methodName: String,
-                                     vararg args: Any) =
-        XposedHelpers.callStaticMethod(this, methodName, *args) as T
-
-/**
- * Calls the static method with the name and the args
- */
-inline fun Class<*>.invokeStatic(methodName: String,
-                                     parameterTypes: Array<Class<*>>,
-                                     vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args)
 
 /**
@@ -264,7 +208,7 @@ inline fun Class<*>.invokeStatic(methodName: String,
  */
 @JvmName("invokeStaticAs")
 inline fun <T> Class<*>.invokeStatic(methodName: String,
-                                     parameterTypes: Array<Class<*>>,
+                                     parameterTypes: Array<Class<*>> = emptyArray(),
                                      vararg args: Any) =
         XposedHelpers.callStaticMethod(this, methodName, parameterTypes, *args) as T
 
@@ -272,23 +216,8 @@ inline fun <T> Class<*>.invokeStatic(methodName: String,
  * Calls the static method with the name and the args
  */
 inline fun KClass<*>.invokeStatic(methodName: String,
+                                  parameterTypes: Array<Class<*>> = emptyArray(),
                                   vararg args: Any) =
-        XposedHelpers.callStaticMethod(this.java, methodName, *args)
-
-/**
- * Calls the static method with the name and the args
- */
-@JvmName("invokeStaticAs")
-inline fun <T> KClass<*>.invokeStatic(methodName: String,
-                                      vararg args: Any) =
-        XposedHelpers.callStaticMethod(this.java, methodName, *args) as T
-
-/**
- * Calls the static method with the name and the args
- */
-inline fun KClass<*>.invokeStatic(methodName: String,
-                                      parameterTypes: Array<Class<*>>,
-                                      vararg args: Any) =
         XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args)
 
 /**
@@ -296,6 +225,6 @@ inline fun KClass<*>.invokeStatic(methodName: String,
  */
 @JvmName("invokeStaticAs")
 inline fun <T> KClass<*>.invokeStatic(methodName: String,
-                                      parameterTypes: Array<Class<*>>,
+                                      parameterTypes: Array<Class<*>> = emptyArray(),
                                       vararg args: Any) =
         XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args) as T

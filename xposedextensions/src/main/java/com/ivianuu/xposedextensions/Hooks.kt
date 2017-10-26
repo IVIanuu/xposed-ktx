@@ -113,7 +113,6 @@ class MethodHook {
  * Wraps a method hook param
  */
 class Param(private val value: MethodHookParam) {
-
     val method = value.method
     val args = value.args
     var result: Any?
@@ -131,6 +130,12 @@ class Param(private val value: MethodHookParam) {
     /**
      * Returns the instance as t
      */
+    fun instance() = value.thisObject
+
+    /**
+     * Returns the instance as t
+     */
+    @JvmName("instanceAs")
     fun <T> instance() = value.thisObject as T
 }
 

@@ -16,13 +16,10 @@
 
 package com.ivianuu.xposedextensions.sample
 
-import android.app.Activity
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import android.widget.TextView
 import de.robv.android.xposed.*
-import de.robv.android.xposed.callbacks.XCallback
-
 
 /**
  * Xposed init
@@ -38,17 +35,27 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         val clockClass = lpparam.classLoader.find(CLOCK)
 
-        clockClass.invoke("", "")
-
         clockClass.hook("updateClock") {
             priority { XC_MethodHook.PRIORITY_HIGHEST }
             before { logX { "before update clock" } }
+            before {
+                it.instance<TextView>().customField?.let {
+                    logX { "hey custom field $it" }
+                }
+
+                it.instance<TextView>().freezesText?.let {
+                    logX { "hey freezes text $it" }
+                }
+            }
             after {
-                it.instance<TextView>().text = "Keine Zeit"
-                logX { "after update clock" }
+                val instance = it.instance<TextView>()
+                instance.customField = instance.text
             }
         }
     }
+
+    private var TextView.customField by optionalAdditionalField<CharSequence>("field")
+    private var TextView.freezesText by optionalField("mFreezesText")
 
     private companion object {
         private const val SYSTEM_UI = "com.android.systemui"

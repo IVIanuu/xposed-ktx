@@ -17,7 +17,9 @@
 package com.ivianuu.xposedextensions
 
 import de.robv.android.xposed.XposedHelpers
+import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
+import kotlin.reflect.KProperty
 
 // CLASS
 
@@ -442,3 +444,145 @@ inline fun <T> KClass<*>.invokeStatic(methodName: String,
                                       parameterTypes: Array<Class<*>>,
                                       vararg args: Any) =
         XposedHelpers.callStaticMethod(this.java, methodName, parameterTypes, *args) as T
+
+// DELEGATES
+
+/**
+ * Returns a read write field which uses the fieldName to get and set it
+ */
+fun field(fieldName: String) = Field<Any>(fieldName)
+
+/**
+ * Returns a read write field which uses the fieldName to get and set it
+ */
+@JvmName("fieldAs")
+fun <T : Any> field(fieldName: String) = Field<T>(fieldName)
+
+/**
+ * Returns a read write field which uses the fieldName to get and set it
+ */
+fun optionalField(fieldName: String) = Field<Any?>(fieldName)
+
+/**
+ * Returns a read write field which uses the fieldName to get and set it
+ */
+@JvmName("optionalFieldAs")
+fun <T : Any> optionalField(fieldName: String) = Field<T?>(fieldName)
+
+/**
+ * Returns a static read write field which uses the fieldName to get and set it
+ */
+fun staticField(fieldName: String) = StaticField<Any>(fieldName)
+
+/**
+ * Returns a static read write field which uses the fieldName to get and set it
+ */
+@JvmName("fieldAs")
+fun <T : Any> staticField(fieldName: String) = StaticField<T>(fieldName)
+
+/**
+ * Returns a static read write field which uses the fieldName to get and set it
+ */
+fun optionalStaticField(fieldName: String) = StaticField<Any?>(fieldName)
+
+/**
+ * Returns a static read write field which uses the fieldName to get and set it
+ */
+@JvmName("staticOptionalFieldAs")
+fun <T : Any> optionalStaticField(fieldName: String) = StaticField<T?>(fieldName)
+
+/**
+ * Returns a additional read write field which uses the fieldName to get and set it
+ */
+fun additionalField(fieldName: String) = AdditionalField<Any>(fieldName)
+
+/**
+ * Returns a additional read write field which uses the fieldName to get and set it
+ */
+@JvmName("addtionalFieldAs")
+fun <T : Any> additionalField(fieldName: String) = AdditionalField<T>(fieldName)
+
+/**
+ * Returns a additional read write field which uses the fieldName to get and set it
+ */
+fun optionalAdditionalField(fieldName: String) = AdditionalField<Any?>(fieldName)
+
+/**
+ * Returns a additional read write field which uses the fieldName to get and set it
+ */
+@JvmName("optionalFieldAs")
+fun <T : Any> optionalAdditionalField(fieldName: String) = AdditionalField<T?>(fieldName)
+
+/**
+ * Returns a additional static read write field which uses the fieldName to get and set it
+ */
+fun additionalStaticField(fieldName: String) = AdditionalStaticField<Any>(fieldName)
+
+/**
+ * Returns a additional static read write field which uses the fieldName to get and set it
+ */
+@JvmName("additionalStaticFieldAs")
+fun <T : Any> additionalStaticField(fieldName: String) = AdditionalStaticField<T>(fieldName)
+
+/**
+ * Returns a additional static read write field which uses the fieldName to get and set it
+ */
+fun optionalAdditionalStaticField(fieldName: String) = AdditionalStaticField<Any?>(fieldName)
+
+/**
+ * Returns a additional static read write field which uses the fieldName to get and set it
+ */
+@JvmName("optionalAdditionalStaticFieldAs")
+fun <T : Any> optionalAdditionalStaticField(fieldName: String) = AdditionalStaticField<T?>(fieldName)
+
+/**
+ * Reads and writes fields
+ */
+class Field<Value : Any?>(private val fieldName: String): ReadWriteProperty<Any, Value> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Value =
+            thisRef.get<Value>(fieldName)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Value) {
+        thisRef.set(fieldName, value)
+    }
+}
+
+/**
+ * Reads and writes static fields
+ */
+class StaticField<Value : Any?>(private val fieldName: String): ReadWriteProperty<Any, Value> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Value =
+            thisRef.get<Value>(fieldName)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Value) {
+        thisRef.set(fieldName, value)
+    }
+}
+
+/**
+ * Reads and writes additional field
+ */
+class AdditionalField<Value : Any?>(private val fieldName: String): ReadWriteProperty<Any, Value> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Value =
+            thisRef.getAdditional<Value>(fieldName)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Value) {
+        thisRef.setAdditional(fieldName, value)
+    }
+}
+
+/**
+ * Reads and writes additional static fields
+ */
+class AdditionalStaticField<Value : Any?>(private val fieldName: String): ReadWriteProperty<Any, Value> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>): Value =
+            thisRef.getAdditionalStatic<Value>(fieldName)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: Value) {
+        thisRef.setAdditionalStatic(fieldName, value)
+    }
+}

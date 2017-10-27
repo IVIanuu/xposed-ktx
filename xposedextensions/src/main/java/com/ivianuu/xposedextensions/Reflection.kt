@@ -270,6 +270,19 @@ inline fun Any.removeAdditional(fieldName: String) =
 /**
  * Returns the field with the name
  */
+inline fun Any.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getAdditionalStaticAs")
+inline fun <T> Any.getAdditionalStatic(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
 inline fun Class<*>.getAdditionalStatic(fieldName: String)
         = XposedHelpers.getAdditionalStaticField(this, fieldName)
 
@@ -296,15 +309,15 @@ inline fun <T> KClass<*>.getAdditionalStatic(fieldName: String)
 /**
  * Returns the field with the name
  */
-inline fun Any.getAdditionalStatic(fieldName: String)
+inline fun Any.getAdditionalStaticOptional(fieldName: String): Any?
         = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName)
 
 /**
  * Returns the field with the name
  */
-@JvmName("getAdditionalStaticAs")
-inline fun <T> Any.getAdditionalStatic(fieldName: String)
-        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName) as T
+@JvmName("getAdditionalStaticOptionalAs")
+inline fun <T> Any.getAdditionalStaticOptional(fieldName: String)
+        = XposedHelpers.getAdditionalStaticField(this::class.java, fieldName) as T?
 
 /**
  * Returns the field with the name

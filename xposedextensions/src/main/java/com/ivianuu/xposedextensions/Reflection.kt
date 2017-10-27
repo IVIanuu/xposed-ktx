@@ -176,12 +176,12 @@ inline fun <T> Any.invoke(name: String,
 /**
  * Calls the method with the name and the args and returns the result
  */
-inline fun Any.invoke(name: String, vararg args: Any?) = invoke<Any>(name, args)
+inline fun Any.invoke(name: String, vararg args: Any?) = invoke<Any>(name, *args)
 
 /**
  * Calls the method with the name and the args and returns the result which can be null
  */
-inline fun Any.invokeNull(name: String, vararg args: Any?) = invoke<Any?>(name, args)
+inline fun Any.invokeNull(name: String, vararg args: Any?) = invoke<Any?>(name, *args)
 
 /**
  * Calls the method with the name, the param types and the args and returns the result

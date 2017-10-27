@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+@file:Suppress("NOTHING_TO_INLINE", "UNCHECKED_CAST")
+
 package com.ivianuu.xposedextensions
 
 import de.robv.android.xposed.XposedHelpers
-import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
@@ -46,7 +47,7 @@ inline fun <T> Any.new(vararg args: Any?) =
  * Returns a new instance of this class
  */
 inline fun <T> Any.new(parameterTypes: Array<Class<*>>,
-                            vararg args: Any?) =
+                       vararg args: Any?) =
         XposedHelpers.newInstance(toJavaClass(), parameterTypes, *args) as T
 
 // FIELDS
@@ -54,7 +55,7 @@ inline fun <T> Any.new(parameterTypes: Array<Class<*>>,
 /**
  * Returns the field with the name
  */
-@JvmSuppressWildcards
+@JvmName("getAs")
 inline fun <T> Any.get(fieldName: String) =
         XposedHelpers.getObjectField(this, fieldName) as T
 
@@ -88,14 +89,16 @@ inline fun <T> Any.getAdditional(fieldName: String) =
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.setAdditional(fieldName: String, value: Any?) =
-        XposedHelpers.setAdditionalInstanceField(this, fieldName, value)
+inline fun Any.setAdditional(fieldName: String, value: Any?) {
+    XposedHelpers.setAdditionalInstanceField(this, fieldName, value)
+}
 
 /**
  * Removes the additional field with the name
  */
-inline fun Any.removeAdditional(fieldName: String) =
-        XposedHelpers.removeAdditionalInstanceField(this, fieldName)
+inline fun Any.removeAdditional(fieldName: String) {
+    XposedHelpers.removeAdditionalInstanceField(this, fieldName)
+}
 
 // ADDITIONAL STATIC
 
@@ -108,14 +111,16 @@ inline fun <T> Any.getAdditionalStatic(fieldName: String)
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.setAdditionalStatic(fieldName: String, value: Any?) =
-        XposedHelpers.setAdditionalStaticField(toJavaClass(), fieldName, value)
+inline fun Any.setAdditionalStatic(fieldName: String, value: Any?) {
+    XposedHelpers.setAdditionalStaticField(toJavaClass(), fieldName, value)
+}
 
 /**
  * Removes the additional field with the name
  */
-inline fun Any.removeAdditionalStatic(fieldName: String) =
-        XposedHelpers.removeAdditionalStaticField(toJavaClass(), fieldName)
+inline fun Any.removeAdditionalStatic(fieldName: String) {
+    XposedHelpers.removeAdditionalStaticField(toJavaClass(), fieldName)
+}
 
 // METHODS
 
@@ -155,10 +160,9 @@ inline fun <T> Any.invokeStatic(methodName: String,
 /**
  * Returns a read write field which uses the fieldName to get and set it
  */
-fun <T> field(fieldName: String) = object : ReadWriteProperty<Any, T> {
+fun <T : Any> Any.field(fieldName: String) = object : ReadWriteProperty<Any, T> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.get<T>(fieldName)
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(fieldName)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         thisRef.set(fieldName, value)
@@ -168,10 +172,9 @@ fun <T> field(fieldName: String) = object : ReadWriteProperty<Any, T> {
 /**
  * Returns a static read write field which uses the fieldName to get and set it
  */
-fun <T> staticField(fieldName: String) =  object : ReadWriteProperty<Any, T> {
+fun <T> Any.staticField(fieldName: String) =  object : ReadWriteProperty<Any, T> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.get<T>(fieldName)
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(fieldName)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         thisRef.set(fieldName, value)
@@ -181,10 +184,9 @@ fun <T> staticField(fieldName: String) =  object : ReadWriteProperty<Any, T> {
 /**
  * Returns a additional read write field which uses the fieldName to get and set it
  */
-fun <T> additionalField(fieldName: String) = object : ReadWriteProperty<Any, T> {
-
+fun <T> Any.additionalField(fieldName: String) = object : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.getAdditional<T>(fieldName)
+            thisRef.getAdditional(fieldName)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         thisRef.setAdditional(fieldName, value)
@@ -194,10 +196,10 @@ fun <T> additionalField(fieldName: String) = object : ReadWriteProperty<Any, T> 
 /**
  * Returns a additional static read write field which uses the fieldName to get and set it
  */
-fun <T> additionalStaticField(fieldName: String) = object : ReadWriteProperty<Any, T> {
+fun <T> Any.additionalStaticField(fieldName: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.getAdditionalStatic<T>(fieldName)
+            thisRef.getAdditionalStatic(fieldName)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         thisRef.setAdditionalStatic(fieldName, value)

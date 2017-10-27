@@ -33,7 +33,7 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
             Activity::class.hook("onCreate") {
-
+                before { } // do something before on create
             }
         }
     }

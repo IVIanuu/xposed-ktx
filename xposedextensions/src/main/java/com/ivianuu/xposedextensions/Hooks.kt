@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+@file:Suppress("UNCHECKED_CAST")
+
 package com.ivianuu.xposedextensions
 
+import android.app.Activity
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam
 import de.robv.android.xposed.XC_MethodHook.Unhook
@@ -113,6 +116,7 @@ class MethodHook {
  * Wraps a method hook param
  */
 class Param(private val value: MethodHookParam) {
+    val instance = value.thisObject
     val method = value.method
     val args = value.args
     var result: Any?

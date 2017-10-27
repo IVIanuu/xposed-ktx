@@ -255,7 +255,31 @@ inline fun Any.invokeStaticNull(name: String,
 /**
  * Returns a read write field which uses the name to get and set it
  */
-fun <T : Any> Any.field(name: String) = object : ReadWriteProperty<Any, T> {
+@JvmName("fieldAs")
+fun <T> Any.field(name: String) = object : ReadWriteProperty<Any, T> {
+
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
+
+    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+        thisRef.set(name, value)
+    }
+}
+
+/**
+ * Returns a read write field which uses the name to get and set it
+ */
+fun Any.field(name: String) = field<Any>(name)
+
+/**
+ * Returns a nullable read write field which uses the name to get and set it
+ */
+fun Any.nullField(name: String) = field<Any?>(name)
+
+/**
+ * Returns a static read write field which uses the name to get and set it
+ */
+@JvmName("staticFieldAs")
+fun <T> Any.staticField(name: String) =  object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
 
@@ -267,18 +291,17 @@ fun <T : Any> Any.field(name: String) = object : ReadWriteProperty<Any, T> {
 /**
  * Returns a static read write field which uses the name to get and set it
  */
-fun <T> Any.staticField(name: String) =  object : ReadWriteProperty<Any, T> {
+fun Any.staticField(name: String) = staticField<Any>(name)
 
-    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
-
-    override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        thisRef.set(name, value)
-    }
-}
+/**
+ * Returns a nullable static read write field which uses the name to get and set it
+ */
+fun Any.nullStaticField(name: String) = staticField<Any?>(name)
 
 /**
  * Returns a additional read write field which uses the name to get and set it
  */
+@JvmName("additionalFieldAs")
 fun <T> Any.additionalField(name: String) = object : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getAdditional<T>(name)
 
@@ -288,8 +311,19 @@ fun <T> Any.additionalField(name: String) = object : ReadWriteProperty<Any, T> {
 }
 
 /**
+ * Returns a additional read write field which uses the name to get and set it
+ */
+fun Any.additionalField(name: String) = additionalField<Any>(name)
+
+/**
+ * Returns a nullable additional read write field which uses the name to get and set it
+ */
+fun Any.nullAdditionalField(name: String) = additionalField<Any?>(name)
+
+/**
  * Returns a additional static read write field which uses the name to get and set it
  */
+@JvmName("additionalStaticFieldAs")
 fun <T> Any.additionalStaticField(name: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getAdditionalStatic<T>(name)
@@ -298,6 +332,16 @@ fun <T> Any.additionalStaticField(name: String) = object : ReadWriteProperty<Any
         thisRef.setAdditionalStatic(name, value)
     }
 }
+
+/**
+ * Returns a additional read write field which uses the name to get and set it
+ */
+fun Any.additionalStaticField(name: String) = additionalStaticField<Any>(name)
+
+/**
+ * Returns a nullable additional read write field which uses the name to get and set it
+ */
+fun Any.nullAdditionalStaticField(name: String) = additionalStaticField<Any?>(name)
 
 // DELEGATED FUNCTIONS
 
@@ -309,199 +353,235 @@ class Method<out R>(private val getter: (Any) -> R): ReadOnlyProperty<Any, R> {
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function0As")
-fun <T> function0(methodName: String) = Method<() -> T> { receiver ->
-    { receiver.invoke<T>(methodName) }
+fun <T> function0(name: String) = Method<() -> T> { receiver ->
+    { receiver.invoke<T>(name) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function0(methodName: String) = function0<Any>(methodName)
+fun function0(name: String) = function0<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function0Null(methodName: String) = function0<Any?>(methodName)
+fun function0Null(name: String) = function0<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function1As")
-fun <T> function1(methodName: String) = Method<(Any?) -> T> { receiver ->
-    { p1 -> receiver.invoke<T>(methodName, p1) }
+fun <T> function1(name: String) = Method<(Any?) -> T> { receiver ->
+    { p1 -> receiver.invoke<T>(name, p1) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function1(methodName: String) = function1<Any>(methodName)
+fun function1(name: String) = function1<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function1Null(methodName: String) = function1<Any?>(methodName)
+fun function1Null(name: String) = function1<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function2As")
-fun <T> function2(methodName: String) = Method<(Any?, Any?) -> T> { receiver ->
-    { p1, p2 -> receiver.invoke<T>(methodName, p1, p2) }
+fun <T> function2(name: String) = Method<(Any?, Any?) -> T> { receiver ->
+    { p1, p2 -> receiver.invoke<T>(name, p1, p2) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function2(methodName: String) = function2<Any>(methodName)
+fun function2(name: String) = function2<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function2Null(methodName: String) = function2<Any?>(methodName)
+fun function2Null(name: String) = function2<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function3As")
-fun <T> function3(methodName: String) = Method<(Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3 -> receiver.invoke<T>(methodName, p1, p2, p3) }
+fun <T> function3(name: String) = Method<(Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3 -> receiver.invoke<T>(name, p1, p2, p3) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function3(methodName: String) = function3<Any>(methodName)
+fun function3(name: String) = function3<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function3Null(methodName: String) = function3<Any?>(methodName)
+fun function3Null(name: String) = function3<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function4As")
-fun <T> function4(methodName: String) = Method<(Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4 -> receiver.invoke<T>(methodName, p1, p2, p3, p4) }
+fun <T> function4(name: String) = Method<(Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4 -> receiver.invoke<T>(name, p1, p2, p3, p4) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function4(methodName: String) = function4<Any>(methodName)
+fun function4(name: String) = function4<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function4Null(methodName: String) = function4<Any?>(methodName)
+fun function4Null(name: String) = function4<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function5As")
-fun <T> function5(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5) }
+fun <T> function5(name: String) = Method<(Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function5(methodName: String) = function5<Any>(methodName)
+fun function5(name: String) = function5<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function5Null(methodName: String) = function5<Any?>(methodName)
+fun function5Null(name: String) = function5<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function6As")
-fun <T> function6(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5, p6 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5, p6) }
+fun <T> function6(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function6(methodName: String) = function6<Any>(methodName)
+fun function6(name: String) = function6<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function6Null(methodName: String) = function6<Any?>(methodName)
+fun function6Null(name: String) = function6<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function7As")
-fun <T> function7(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5, p6, p7 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5, p6, p7) }
+fun <T> function7(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function7(methodName: String) = function7<Any>(methodName)
+fun function7(name: String) = function7<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function7Null(methodName: String) = function7<Any?>(methodName)
+fun function7Null(name: String) = function7<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function8As")
-fun <T> function8(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5, p6, p7, p8 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5, p6, p7, p8) }
+fun <T> function8(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7, p8 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function8(methodName: String) = function8<Any>(methodName)
+fun function8(name: String) = function8<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function8Null(methodName: String) = function8<Any?>(methodName)
+fun function8Null(name: String) = function8<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function9As")
-fun <T> function9(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5, p6, p7, p8, p9 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5, p6, p7, p8, p9) }
+fun <T> function9(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7, p8, p9 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function9(methodName: String) = function9<Any>(methodName)
+fun function9(name: String) = function9<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function9Null(methodName: String) = function9<Any?>(methodName)
+fun function9Null(name: String) = function9<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function10As")
-fun <T> function10(methodName: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
-    { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 -> receiver.invoke<T>(methodName, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) }
+fun <T> function10(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function10(methodName: String) = function10<Any>(methodName)
+fun function10(name: String) = function10<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function10Null(methodName: String) = function10<Any?>(methodName)
+fun function10Null(name: String) = function10<Any?>(name)
+
+/**
+ * Return a function which invokes the method with the name and returns the result
+ */
+@JvmName("function11As")
+fun <T> function11(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11) }
+}
+
+/**
+ * Returns a function which invokes the method with name and returns the result
+ */
+fun function11(name: String) = function11<Any>(name)
+
+/**
+ * Returns a function which invokes the method with name and returns the result which might be null
+ */
+fun function11Null(name: String) = function11<Any?>(name)
+
+/**
+ * Return a function which invokes the method with the name and returns the result
+ */
+@JvmName("function12As")
+fun <T> function12(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+    { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12) }
+}
+
+/**
+ * Returns a function which invokes the method with name and returns the result
+ */
+fun function12(name: String) = function12<Any>(name)
+
+/**
+ * Returns a function which invokes the method with name and returns the result which might be null
+ */
+fun function12Null(name: String) = function12<Any?>(name)
 
 // HELPER
 

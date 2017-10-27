@@ -17,6 +17,7 @@
 package com.ivianuu.xposedextensions.sample
 
 import android.app.Activity
+import android.view.Window
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import de.robv.android.xposed.*
@@ -33,9 +34,16 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
             Activity::class.hook("onCreate") {
-                after {}
+                after {
+                    it.instance<Activity>().apply {
+
+                    }
+                }
                 before { } // do something before on create
             }
         }
     }
+
+    private val Window.shouldCloseOnOutsideTouch
+            by function2<Boolean>("shouldCloseOnOutsideTouch")
 }

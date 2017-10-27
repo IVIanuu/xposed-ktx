@@ -56,153 +56,245 @@ inline fun <T> Any.new(parameterTypes: Array<Class<*>>,
  * Returns the field with the name
  */
 @JvmName("getAs")
-inline fun <T> Any.get(fieldName: String) =
-        XposedHelpers.getObjectField(this, fieldName) as T
+inline fun <T> Any.get(name: String) = XposedHelpers.getObjectField(this, name) as T
+
+/**
+ * Returns the field with the name
+ */
+inline fun Any.get(name: String) = get<Any>(name)
+
+/**
+ * Returns the field with the name which can be null
+ */
+inline fun Any.getNull(name: String) = get<Any?>(name)
 
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.set(fieldName: String, value: Any?) =
-        XposedHelpers.setObjectField(this, fieldName, value)
+inline fun Any.set(name: String, value: Any?) =
+        XposedHelpers.setObjectField(this, name, value)
 
 // STATIC FIELDS
 
 /**
- * Returns the field with the name
+ * Returns the static field with the name
  */
-inline fun <T> Any.getStatic(fieldName: String)
-        = XposedHelpers.getStaticObjectField(toJavaClass(), fieldName) as T
+@JvmName("getStaticAs")
+inline fun <T> Any.getStatic(name: String) = XposedHelpers.getStaticObjectField(toJavaClass(), name) as T
+
+/**
+ * Returns the static field with the name
+ */
+inline fun Any.getStatic(name: String) = getStatic<Any>(name)
+
+/**
+ * Returns the static field with the name which can be null
+ */
+inline fun Any.getStaticNull(name: String) = getStatic<Any?>(name)
+
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.setStatic(fieldName: String, value: Any?) =
-        XposedHelpers.setStaticObjectField(toJavaClass(), fieldName, value)
+inline fun Any.setStatic(name: String, value: Any?) =
+        XposedHelpers.setStaticObjectField(toJavaClass(), name, value)
 
 // ADDITIONAL
 
 /**
- * Returns the field with the name
+ * Returns the additional field with the name
  */
-inline fun <T> Any.getAdditional(fieldName: String) =
-        XposedHelpers.getAdditionalInstanceField(this, fieldName) as T
+@JvmName("getAdditionalAs")
+inline fun <T> Any.getAdditional(name: String) = XposedHelpers.getAdditionalInstanceField(this, name) as T
+
+/**
+ * Returns the additional static field with the name
+ */
+inline fun Any.getAdditional(name: String) = getAdditional<Any>(name)
+
+/**
+ * Returns the additional static field with the name
+ */
+inline fun Any.getAdditionalNull(name: String) = getAdditional<Any?>(name)
 
 /**
  * Sets the field with the name to the value
  */
-inline fun Any.setAdditional(fieldName: String, value: Any?) {
-    XposedHelpers.setAdditionalInstanceField(this, fieldName, value)
+inline fun Any.setAdditional(name: String, value: Any?) {
+    XposedHelpers.setAdditionalInstanceField(this, name, value)
 }
 
 /**
  * Removes the additional field with the name
  */
-inline fun Any.removeAdditional(fieldName: String) {
-    XposedHelpers.removeAdditionalInstanceField(this, fieldName)
+inline fun Any.removeAdditional(name: String) {
+    XposedHelpers.removeAdditionalInstanceField(this, name)
 }
 
 // ADDITIONAL STATIC
 
 /**
- * Returns the field with the name
+ * Returns the additional static field with the name
  */
-inline fun <T> Any.getAdditionalStatic(fieldName: String)
-        = XposedHelpers.getAdditionalStaticField(toJavaClass(), fieldName) as T
+@JvmName("getAdditionalStaticAs")
+inline fun <T> Any.getAdditionalStatic(name: String) = XposedHelpers.getAdditionalStaticField(toJavaClass(), name) as T
 
 /**
- * Sets the field with the name to the value
+ * Returns the additional static field with the name
  */
-inline fun Any.setAdditionalStatic(fieldName: String, value: Any?) {
-    XposedHelpers.setAdditionalStaticField(toJavaClass(), fieldName, value)
+inline fun Any.getAdditionalStatic(name: String) = getAdditionalStatic<Any>(name)
+
+/**
+ * Returns the additional static field with the name which can be null
+ */
+inline fun Any.getAdditionalStaticNull(name: String) = getAdditionalStatic<Any?>(name)
+
+/**
+ * Sets the additional static field with the name to the value
+ */
+inline fun Any.setAdditionalStatic(name: String, value: Any?) {
+    XposedHelpers.setAdditionalStaticField(toJavaClass(), name, value)
 }
 
 /**
- * Removes the additional field with the name
+ * Removes the additional static field with the name
  */
-inline fun Any.removeAdditionalStatic(fieldName: String) {
-    XposedHelpers.removeAdditionalStaticField(toJavaClass(), fieldName)
+inline fun Any.removeAdditionalStatic(name: String) {
+    XposedHelpers.removeAdditionalStaticField(toJavaClass(), name)
 }
 
 // METHODS
 
 /**
- * Calls the method with the name and the args
+ * Calls the method with the name and the args and returns the result
  */
-inline fun <T> Any.invoke(methodName: String,
+@JvmName("invokeAs")
+inline fun <T> Any.invoke(name: String,
                           vararg args: Any?) =
-        XposedHelpers.callMethod(this, methodName, *args) as T
+        XposedHelpers.callMethod(this, name, *args) as T
 
 /**
- * Calls the method with the name and the args
+ * Calls the method with the name and the args and returns the result
  */
-inline fun <T> Any.invoke(methodName: String,
+inline fun Any.invoke(name: String, vararg args: Any?) = invoke<Any>(name, args)
+
+/**
+ * Calls the method with the name and the args and returns the result which can be null
+ */
+inline fun Any.invokeNull(name: String, vararg args: Any?) = invoke<Any?>(name, args)
+
+/**
+ * Calls the method with the name, the param types and the args and returns the result
+ */
+@JvmName("invokeAs")
+inline fun <T> Any.invoke(name: String,
                           parameterTypes: Array<Class<*>>,
                           vararg args: Any?) =
-        XposedHelpers.callMethod(this, methodName, parameterTypes, *args) as T
+        XposedHelpers.callMethod(this, name, parameterTypes, *args) as T
 
 /**
- * Calls the static method with the name and the args
+ * Calls the method with the name, the param types and the args and returns the result
  */
-inline fun <T> Any.invokeStatic(methodName: String,
+inline fun Any.invoke(name: String,
+                      parameterTypes: Array<Class<*>>,
+                      vararg args: Any?) = invoke<Any>(name, parameterTypes, *args)
+
+/**
+ * Calls the method with the name, the param types and the args and returns the result which can be null
+ */
+inline fun Any.invokeNull(name: String,
+                      parameterTypes: Array<Class<*>>,
+                      vararg args: Any?) = invoke<Any?>(name, parameterTypes, *args)
+
+/**
+ * Calls the static method with the name and the args and returns the result
+ */
+@JvmName("invokeStaticAs")
+inline fun <T> Any.invokeStatic(name: String,
                                 vararg args: Any?) =
-        XposedHelpers.callStaticMethod(this::class.java, methodName, *args) as T
+        XposedHelpers.callStaticMethod(this::class.java, name, *args) as T
 
 /**
- * Calls the static method with the name and the args
+ * Calls the static method with the name and the args and returns the result
  */
-inline fun <T> Any.invokeStatic(methodName: String,
+inline fun Any.invokeStatic(name: String,
+                            vararg args: Any?) = invokeStatic<Any>(name, *args)
+
+/**
+ * Calls the static method with the name and the args and returns the result which can be null
+ */
+inline fun Any.invokeStaticNull(name: String,
+                            vararg args: Any?) = invokeStatic<Any?>(name, *args)
+
+/**
+ * Calls the static method with the name and the args and returns the result
+ */
+@JvmName("invokeStaticAs")
+inline fun <T> Any.invokeStatic(name: String,
                                 parameterTypes: Array<Class<*>>,
                                 vararg args: Any?) =
-        XposedHelpers.callStaticMethod(toJavaClass(), methodName, parameterTypes, *args) as T
+        XposedHelpers.callStaticMethod(toJavaClass(), name, parameterTypes, *args) as T
+
+/**
+ * Calls the static method with the name and the args and returns the result
+ */
+inline fun Any.invokeStatic(name: String,
+                            parameterTypes: Array<Class<*>>,
+                            vararg args: Any?) = invokeStatic<Any>(name, parameterTypes, *args)
+
+/**
+ * Calls the static method with the name and the args and returns the result which can be null
+ */
+inline fun Any.invokeStaticNull(name: String,
+                            parameterTypes: Array<Class<*>>,
+                            vararg args: Any?) = invokeStatic<Any>(name, parameterTypes, *args)
 
 
 // DELEGATES
 
 /**
- * Returns a read write field which uses the fieldName to get and set it
+ * Returns a read write field which uses the name to get and set it
  */
-fun <T : Any> Any.field(fieldName: String) = object : ReadWriteProperty<Any, T> {
+fun <T : Any> Any.field(name: String) = object : ReadWriteProperty<Any, T> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(fieldName)
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        thisRef.set(fieldName, value)
+        thisRef.set(name, value)
     }
 }
 
 /**
- * Returns a static read write field which uses the fieldName to get and set it
+ * Returns a static read write field which uses the name to get and set it
  */
-fun <T> Any.staticField(fieldName: String) =  object : ReadWriteProperty<Any, T> {
+fun <T> Any.staticField(name: String) =  object : ReadWriteProperty<Any, T> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(fieldName)
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        thisRef.set(fieldName, value)
+        thisRef.set(name, value)
     }
 }
 
 /**
- * Returns a additional read write field which uses the fieldName to get and set it
+ * Returns a additional read write field which uses the name to get and set it
  */
-fun <T> Any.additionalField(fieldName: String) = object : ReadWriteProperty<Any, T> {
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.getAdditional(fieldName)
+fun <T> Any.additionalField(name: String) = object : ReadWriteProperty<Any, T> {
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getAdditional<T>(name)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        thisRef.setAdditional(fieldName, value)
+        thisRef.setAdditional(name, value)
     }
 }
 
 /**
- * Returns a additional static read write field which uses the fieldName to get and set it
+ * Returns a additional static read write field which uses the name to get and set it
  */
-fun <T> Any.additionalStaticField(fieldName: String) = object : ReadWriteProperty<Any, T> {
+fun <T> Any.additionalStaticField(name: String) = object : ReadWriteProperty<Any, T> {
 
-    override fun getValue(thisRef: Any, property: KProperty<*>): T =
-            thisRef.getAdditionalStatic(fieldName)
+    override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getAdditionalStatic<T>(name)
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        thisRef.setAdditionalStatic(fieldName, value)
+        thisRef.setAdditionalStatic(name, value)
     }
 }
 

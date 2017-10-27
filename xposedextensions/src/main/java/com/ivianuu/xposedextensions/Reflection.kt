@@ -386,6 +386,21 @@ inline fun <T> Any.invoke(methodName: String,
 /**
  * Calls the static method with the name and the args
  */
+inline fun Any.invokeStatic(methodName: String,
+                                 vararg args: Any?) =
+        XposedHelpers.callStaticMethod(this::class.java, methodName, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
+inline fun <T> Any.invokeStatic(methodName: String,
+                                     vararg args: Any?) =
+        XposedHelpers.callStaticMethod(this::class.java, methodName, *args) as T
+
+/**
+ * Calls the static method with the name and the args
+ */
 inline fun Class<*>.invokeStatic(methodName: String,
                                  vararg args: Any?) =
         XposedHelpers.callStaticMethod(this, methodName, *args)
@@ -397,6 +412,23 @@ inline fun Class<*>.invokeStatic(methodName: String,
 inline fun <T> Class<*>.invokeStatic(methodName: String,
                                      vararg args: Any?) =
         XposedHelpers.callStaticMethod(this, methodName, *args) as T
+
+/**
+ * Calls the static method with the name and the args
+ */
+inline fun Any.invokeStatic(methodName: String,
+                                 parameterTypes: Array<Class<*>>,
+                                 vararg args: Any?) =
+        XposedHelpers.callStaticMethod(this::class.java, methodName, parameterTypes, *args)
+
+/**
+ * Calls the static method with the name and the args
+ */
+@JvmName("invokeStaticAs")
+inline fun <T> Any.invokeStatic(methodName: String,
+                                     parameterTypes: Array<Class<*>>,
+                                     vararg args: Any?) =
+        XposedHelpers.callStaticMethod(this::class.java, methodName, parameterTypes, *args) as T
 
 /**
  * Calls the static method with the name and the args

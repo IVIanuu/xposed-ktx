@@ -35,10 +35,13 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
 
         val clockClass = lpparam.classLoader.find(CLOCK)
 
+        clockClass.invokeStatic("")
+
         clockClass.hook("updateClock") {
             priority { XC_MethodHook.PRIORITY_HIGHEST }
             before { logX { "before update clock" } }
             before {
+                it.instance().invokeStatic("")
                 it.instance<TextView>().customField?.let {
                     logX { "hey custom field $it" }
                 }

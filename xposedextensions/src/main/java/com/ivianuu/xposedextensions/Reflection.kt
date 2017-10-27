@@ -132,6 +132,19 @@ inline fun Any.set(fieldName: String, value: Any?) =
 /**
  * Returns the field with the name
  */
+inline fun Any.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this::class.java, fieldName)
+
+/**
+ * Returns the field with the name
+ */
+@JvmName("getStaticAs")
+inline fun <T> Any.getStatic(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this::class.java, fieldName) as T
+
+/**
+ * Returns the field with the name
+ */
 inline fun Class<*>.getStatic(fieldName: String)
         = XposedHelpers.getStaticObjectField(this, fieldName)
 
@@ -158,15 +171,15 @@ inline fun <T> KClass<*>.getStatic(fieldName: String)
 /**
  * Returns the field with the name
  */
-inline fun Any.getStatic(fieldName: String)
+inline fun Any.getStaticOptional(fieldName: String): Any?
         = XposedHelpers.getStaticObjectField(this::class.java, fieldName)
 
 /**
  * Returns the field with the name
  */
-@JvmName("getStaticAs")
-inline fun <T> Any.getStatic(fieldName: String)
-        = XposedHelpers.getStaticObjectField(this::class.java, fieldName) as T
+@JvmName("getStaticOptionalAs")
+inline fun <T> Any.getStaticOptional(fieldName: String)
+        = XposedHelpers.getStaticObjectField(this::class.java, fieldName) as T?
 
 /**
  * Returns the field with the name
@@ -193,6 +206,12 @@ inline fun KClass<*>.getStaticOptional(fieldName: String): Any?
 @JvmName("getStaticOptionalAs")
 inline fun <T> KClass<*>.getStaticOptional(fieldName: String)
         = XposedHelpers.getStaticObjectField(this.java, fieldName) as T?
+
+/**
+ * Sets the field with the name to the value
+ */
+inline fun Any.setStatic(fieldName: String, value: Any?) =
+        XposedHelpers.setStaticObjectField(this::class.java, fieldName, value)
 
 /**
  * Sets the field with the name to the value

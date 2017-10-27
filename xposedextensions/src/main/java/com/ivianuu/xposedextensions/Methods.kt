@@ -176,8 +176,17 @@ class Param(private val value: MethodHookParam) {
     /**
      * Returns the instance as t
      */
-    @JvmName("instanceAs")
     fun <T> instance() = value.thisObject as T
+
+    /**
+     * Returns the result as t
+     */
+    fun <T> result() = value.result as T?
+
+    /**
+     * Returns the arg at the index as t
+     */
+    fun <T> argAs(index: Int) = args[index] as T
 }
 
 /**

@@ -16,9 +16,9 @@
 
 package com.ivianuu.xposedextensions.sample
 
+import android.app.Activity
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
-import android.widget.TextView
 import de.robv.android.xposed.*
 
 /**
@@ -31,37 +31,10 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
     }
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        if (lpparam.packageName != SYSTEM_UI) return
+        if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
+            Activity::class.hook("onCreate") {
 
-        val clockClass = lpparam.classLoader.find(CLOCK)
-
-        clockClass.invokeStatic("")
-
-        clockClass.hook("updateClock") {
-            priority { XC_MethodHook.PRIORITY_HIGHEST }
-            before { logX { "before update clock" } }
-            before {
-                it.instance().invokeStatic("")
-                it.instance<TextView>().customField?.let {
-                    logX { "hey custom field $it" }
-                }
-
-                it.instance<TextView>().freezesText?.let {
-                    logX { "hey freezes text $it" }
-                }
-            }
-            after {
-                val instance = it.instance<TextView>()
-                instance.customField = instance.text
             }
         }
-    }
-
-    private var TextView.customField by optionalAdditionalField<CharSequence>("field")
-    private var TextView.freezesText by optionalField("mFreezesText")
-
-    private companion object {
-        private const val SYSTEM_UI = "com.android.systemui"
-        private const val CLOCK = "com.android.systemui.statusbar.policy.Clock"
     }
 }

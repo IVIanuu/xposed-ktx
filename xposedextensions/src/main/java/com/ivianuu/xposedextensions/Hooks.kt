@@ -53,43 +53,70 @@ class MethodHook {
         this.priority = priority
     }
 
+    /**
+     * Sets the priority
+     */
     fun priority(action: () -> Int) {
         priority(action())
     }
 
+    /**
+     * Will be invoked before the hooked method
+     */
     fun before(action: (Param) -> Unit) {
         this.before = action
         this.beforeSet = true
     }
 
+    /**
+     * Will be invoked after the hooked method
+     */
     fun after(action: (Param) -> Unit) {
         this.after = action
         this.afterSet = true
     }
 
+    /**
+     * Replaces the hooked method and returns the result of the function
+     */
     fun replace(action: (Param) -> Any?) {
         this.replace = action
         this.replaceSet = true
     }
 
+    /**
+     * Replaces the original method and returns the constant
+     */
     fun returnConstant(constant: Any?) {
         this.returnConstant = constant
         this.returnConstantSet = true
     }
 
+    /**
+     * Replaces the original method and returns the constant
+     */
     fun returnConstant(action: () -> Any?) {
         returnConstant(action())
     }
 
+    /**
+     * Skips the hooked method
+     */
     fun doNothing() {
         doNothingSet = true
     }
 
+    /**
+     * Skips the hooked method
+     */
     fun doNothing(action: () -> Unit) {
         doNothingSet = true
     }
 
-    internal fun build(): XC_MethodHook = when {
+    /**
+     * Builds the method hook
+     */
+    fun build(): XC_MethodHook = when {
         doNothingSet -> XC_MethodReplacement.DO_NOTHING
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
         replaceSet -> {
@@ -116,12 +143,27 @@ class MethodHook {
  * Wraps a method hook param
  */
 class Param(private val value: MethodHookParam) {
+    /**
+     * The instance
+     */
     val instance = value.thisObject
+    /**
+     * The hooked method
+     */
     val method = value.method
+    /**
+     * Args of the hooked method
+     */
     val args = value.args
+    /**
+     * The result of the hooked method
+     */
     var result: Any?
         get() = value.result
         set(value) { this.value.result = value }
+    /**
+     * The exception of the hooked method
+     */
     var exception: Throwable?
         get() = value.throwable
         set(value) { this.value.throwable = value }
@@ -142,7 +184,7 @@ class Param(private val value: MethodHookParam) {
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
-fun Class<*>.hook(methodName: String = "",
+inline fun Class<*>.hook(methodName: String = "",
                   init: MethodHook.() -> Unit): Set<Unhook> {
     val hook = MethodHook()
     init(hook)

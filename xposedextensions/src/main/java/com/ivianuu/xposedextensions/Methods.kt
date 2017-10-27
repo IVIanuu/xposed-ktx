@@ -186,7 +186,13 @@ class Param(private val value: MethodHookParam) {
     /**
      * Returns the arg at the index as t
      */
-    fun <T> argAs(index: Int) = args[index] as T
+    @JvmName("argAs")
+    fun <T> arg(index: Int) = args[index] as T
+
+    /**
+     * Returns the arg at the index
+     */
+    fun arg(index: Int) = args[index]
 }
 
 /**

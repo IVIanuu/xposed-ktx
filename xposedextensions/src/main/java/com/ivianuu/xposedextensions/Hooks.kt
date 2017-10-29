@@ -192,6 +192,13 @@ class Param(private val value: MethodHookParam) {
     fun result() = result<Any>()
 
     /**
+     * Sets the result
+     */
+    fun result(result: Any?) {
+        this.result = result
+    }
+
+    /**
      * Returns the result
      */
     fun resultSafe() = result<Any?>()

@@ -26,6 +26,7 @@ import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.Constructor
+import java.lang.reflect.Member
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
@@ -121,8 +122,7 @@ class MethodHook {
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
         replaceSet -> {
             object : XC_MethodReplacement(priority) {
-                override fun replaceHookedMethod(param: MethodHookParam): Any? =
-                        replace?.invoke(Param(param))
+                override fun replaceHookedMethod(param: MethodHookParam) = replace?.invoke(Param(param))
             }
         }
         beforeSet || afterSet -> {
@@ -143,30 +143,37 @@ class MethodHook {
  * Wraps a method hook param
  */
 class Param(private val value: MethodHookParam) {
-    /**
-     * The instance
-     */
-    val instance = value.thisObject
-    /**
-     * The hooked method
-     */
-    val method = value.method
-    /**
-     * Args of the hooked method
-     */
-    val args = value.args
-    /**
-     * The result of the hooked method
-     */
-    var result: Any?
+
+    private val instance = value.thisObject
+    private val method = value.method
+    private val args:Array<Any?> = value.args
+    private var result: Any?
         get() = value.result
         set(value) { this.value.result = value }
-    /**
-     * The exception of the hooked method
-     */
-    var exception: Throwable?
+    private var exception: Throwable?
         get() = value.throwable
         set(value) { this.value.throwable = value }
+
+    /**
+     * Returns the instance as t
+     */
+    @JvmName("instanceAs")
+    fun <T> instance() = value.thisObject as T
+
+    /**
+     * Returns the instance
+     */
+    fun instance() = instance<Any>()
+
+    /**
+     * Returns the method
+     */
+    fun method(): Member = method
+
+    /**
+     * Returns the args
+     */
+    fun args() = args
 
     /**
      * Returns the return value or throws the exception
@@ -174,25 +181,25 @@ class Param(private val value: MethodHookParam) {
     fun returns(): Any? = value.resultOrThrowable
 
     /**
-     * Returns the instance as t
-     */
-    fun <T> instance() = value.thisObject as T
-
-    /**
      * Returns the result as t
      */
+    @JvmName("resultAs")
     fun <T> result() = value.result as T?
 
     /**
-     * Returns the arg at the index as t
+     * Returns the result
      */
-    @JvmName("argAs")
-    fun <T> arg(index: Int) = args[index] as T
+    fun result() = result<Any>()
 
     /**
-     * Returns the arg at the index
+     * Returns the result
      */
-    fun arg(index: Int) = args[index]
+    fun resultSafe() = result<Any?>()
+
+    /**
+     * Returns the exception
+     */
+    fun exception() = exception
 }
 
 /**

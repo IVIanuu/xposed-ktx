@@ -67,7 +67,7 @@ inline fun Any.get(name: String) = get<Any>(name)
 /**
  * Returns the field with the name which can be null
  */
-inline fun Any.getNull(name: String) = get<Any?>(name)
+inline fun Any.getSafe(name: String) = get<Any?>(name)
 
 /**
  * Sets the field with the name to the value
@@ -91,7 +91,7 @@ inline fun Any.getStatic(name: String) = getStatic<Any>(name)
 /**
  * Returns the static field with the name which can be null
  */
-inline fun Any.getStaticNull(name: String) = getStatic<Any?>(name)
+inline fun Any.getStaticSafe(name: String) = getStatic<Any?>(name)
 
 /**
  * Sets the field with the name to the value
@@ -115,7 +115,7 @@ inline fun Any.getAdditional(name: String) = getAdditional<Any>(name)
 /**
  * Returns the additional static field with the name
  */
-inline fun Any.getAdditionalNull(name: String) = getAdditional<Any?>(name)
+inline fun Any.getAdditionalSafe(name: String) = getAdditional<Any?>(name)
 
 /**
  * Sets the field with the name to the value
@@ -147,7 +147,7 @@ inline fun Any.getAdditionalStatic(name: String) = getAdditionalStatic<Any>(name
 /**
  * Returns the additional static field with the name which can be null
  */
-inline fun Any.getAdditionalStaticNull(name: String) = getAdditionalStatic<Any?>(name)
+inline fun Any.getAdditionalStaticSafe(name: String) = getAdditionalStatic<Any?>(name)
 
 /**
  * Sets the additional static field with the name to the value
@@ -181,7 +181,7 @@ inline fun Any.invoke(name: String, vararg args: Any?) = invoke<Any>(name, *args
 /**
  * Calls the method with the name and the args and returns the result which can be null
  */
-inline fun Any.invokeNull(name: String, vararg args: Any?) = invoke<Any?>(name, *args)
+inline fun Any.invokeSafe(name: String, vararg args: Any?) = invoke<Any?>(name, *args)
 
 /**
  * Calls the method with the name, the param types and the args and returns the result
@@ -202,7 +202,7 @@ inline fun Any.invoke(name: String,
 /**
  * Calls the method with the name, the param types and the args and returns the result which can be null
  */
-inline fun Any.invokeNull(name: String,
+inline fun Any.invokeSafe(name: String,
                       parameterTypes: Array<Class<*>>,
                       vararg args: Any?) = invoke<Any?>(name, parameterTypes, *args)
 
@@ -223,7 +223,7 @@ inline fun Any.invokeStatic(name: String,
 /**
  * Calls the static method with the name and the args and returns the result which can be null
  */
-inline fun Any.invokeStaticNull(name: String,
+inline fun Any.invokeStaticSafe(name: String,
                             vararg args: Any?) = invokeStatic<Any?>(name, *args)
 
 /**
@@ -245,7 +245,7 @@ inline fun Any.invokeStatic(name: String,
 /**
  * Calls the static method with the name and the args and returns the result which can be null
  */
-inline fun Any.invokeStaticNull(name: String,
+inline fun Any.invokeStaticSafe(name: String,
                             parameterTypes: Array<Class<*>>,
                             vararg args: Any?) = invokeStatic<Any>(name, parameterTypes, *args)
 
@@ -273,7 +273,7 @@ fun Any.field(name: String) = field<Any>(name)
 /**
  * Returns a nullable read write field which uses the name to get and set it
  */
-fun Any.nullField(name: String) = field<Any?>(name)
+fun Any.nullableField(name: String) = field<Any?>(name)
 
 /**
  * Returns a static read write field which uses the name to get and set it
@@ -318,7 +318,7 @@ fun Any.additionalField(name: String) = additionalField<Any>(name)
 /**
  * Returns a nullable additional read write field which uses the name to get and set it
  */
-fun Any.nullAdditionalField(name: String) = additionalField<Any?>(name)
+fun Any.nullableAdditionalField(name: String) = additionalField<Any?>(name)
 
 /**
  * Returns a additional static read write field which uses the name to get and set it
@@ -341,7 +341,7 @@ fun Any.additionalStaticField(name: String) = additionalStaticField<Any>(name)
 /**
  * Returns a nullable additional read write field which uses the name to get and set it
  */
-fun Any.nullAdditionalStaticField(name: String) = additionalStaticField<Any?>(name)
+fun Any.nullableAdditionalStaticField(name: String) = additionalStaticField<Any?>(name)
 
 // DELEGATED FUNCTIONS
 
@@ -365,7 +365,7 @@ fun function0(name: String) = function0<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function0Null(name: String) = function0<Any?>(name)
+fun function0Safe(name: String) = function0<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -383,7 +383,7 @@ fun function1(name: String) = function1<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function1Null(name: String) = function1<Any?>(name)
+fun function1Safe(name: String) = function1<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -401,7 +401,7 @@ fun function2(name: String) = function2<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function2Null(name: String) = function2<Any?>(name)
+fun function2Safe(name: String) = function2<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -419,7 +419,7 @@ fun function3(name: String) = function3<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function3Null(name: String) = function3<Any?>(name)
+fun function3Safe(name: String) = function3<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -437,7 +437,7 @@ fun function4(name: String) = function4<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function4Null(name: String) = function4<Any?>(name)
+fun function4Safe(name: String) = function4<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -455,7 +455,7 @@ fun function5(name: String) = function5<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function5Null(name: String) = function5<Any?>(name)
+fun function5Safe(name: String) = function5<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -473,7 +473,7 @@ fun function6(name: String) = function6<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function6Null(name: String) = function6<Any?>(name)
+fun function6Safe(name: String) = function6<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -491,7 +491,7 @@ fun function7(name: String) = function7<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function7Null(name: String) = function7<Any?>(name)
+fun function7Safe(name: String) = function7<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -509,7 +509,7 @@ fun function8(name: String) = function8<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function8Null(name: String) = function8<Any?>(name)
+fun function8Safe(name: String) = function8<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -527,7 +527,7 @@ fun function9(name: String) = function9<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function9Null(name: String) = function9<Any?>(name)
+fun function9Safe(name: String) = function9<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -545,7 +545,7 @@ fun function10(name: String) = function10<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function10Null(name: String) = function10<Any?>(name)
+fun function10Safe(name: String) = function10<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -563,7 +563,7 @@ fun function11(name: String) = function11<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function11Null(name: String) = function11<Any?>(name)
+fun function11Safe(name: String) = function11<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
@@ -581,7 +581,7 @@ fun function12(name: String) = function12<Any>(name)
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function12Null(name: String) = function12<Any?>(name)
+fun function12Safe(name: String) = function12<Any?>(name)
 
 // HELPER
 

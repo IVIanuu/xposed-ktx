@@ -36,9 +36,9 @@ import kotlin.reflect.KClass
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
-    private var before: ((Param) -> Unit)? = null
-    private var after: ((Param) -> Unit)? = null
-    private var replace: ((Param) -> Any?)? = null
+    private var before: ((MethodHookParam) -> Unit)? = null
+    private var after: ((MethodHookParam) -> Unit)? = null
+    private var replace: ((MethodHookParam) -> Any?)? = null
     private var returnConstant: Any? = null
 
     private var beforeSet = false
@@ -64,7 +64,7 @@ class MethodHook {
     /**
      * Will be invoked before the hooked method
      */
-    fun before(action: (Param) -> Unit) {
+    fun before(action: (MethodHookParam) -> Unit) {
         this.before = action
         this.beforeSet = true
     }
@@ -72,7 +72,7 @@ class MethodHook {
     /**
      * Will be invoked after the hooked method
      */
-    fun after(action: (Param) -> Unit) {
+    fun after(action: (MethodHookParam) -> Unit) {
         this.after = action
         this.afterSet = true
     }
@@ -80,7 +80,7 @@ class MethodHook {
     /**
      * Replaces the hooked method and returns the result of the function
      */
-    fun replace(action: (Param) -> Any?) {
+    fun replace(action: (MethodHookParam) -> Any?) {
         this.replace = action
         this.replaceSet = true
     }
@@ -122,91 +122,21 @@ class MethodHook {
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
         replaceSet -> {
             object : XC_MethodReplacement(priority) {
-                override fun replaceHookedMethod(param: MethodHookParam) = replace?.invoke(Param(param))
+                override fun replaceHookedMethod(param: MethodHookParam) = replace!!(param)
             }
         }
         beforeSet || afterSet -> {
             object : XC_MethodHook(priority) {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    before?.let { it(Param(param)) }
+                    before?.let { it(param) }
                 }
                 override fun afterHookedMethod(param: MethodHookParam) {
-                    after?.let { it(Param(param)) }
+                    after?.let { it(param) }
                 }
             }
         }
         else -> throw IllegalArgumentException("invalid configuration")
     }
-}
-
-/**
- * Wraps a method hook param
- */
-class Param(private val value: MethodHookParam) {
-
-    private val instance = value.thisObject
-    private val method = value.method
-    private val args:Array<Any?> = value.args
-    private var result: Any?
-        get() = value.result
-        set(value) { this.value.result = value }
-    private var exception: Throwable?
-        get() = value.throwable
-        set(value) { this.value.throwable = value }
-
-    /**
-     * Returns the instance as t
-     */
-    @JvmName("instanceAs")
-    fun <T> instance() = value.thisObject as T
-
-    /**
-     * Returns the instance
-     */
-    fun instance() = instance<Any>()
-
-    /**
-     * Returns the method
-     */
-    fun method(): Member = method
-
-    /**
-     * Returns the args
-     */
-    fun args() = args
-
-    /**
-     * Returns the return value or throws the exception
-     */
-    fun returns(): Any? = value.resultOrThrowable
-
-    /**
-     * Returns the result as t
-     */
-    @JvmName("resultAs")
-    fun <T> result() = value.result as T?
-
-    /**
-     * Returns the result
-     */
-    fun result() = result<Any>()
-
-    /**
-     * Sets the result
-     */
-    fun result(result: Any?) {
-        this.result = result
-    }
-
-    /**
-     * Returns the result
-     */
-    fun resultSafe() = result<Any?>()
-
-    /**
-     * Returns the exception
-     */
-    fun exception() = exception
 }
 
 /**

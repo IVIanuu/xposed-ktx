@@ -212,7 +212,7 @@ inline fun Any.invokeNull(name: String,
 @JvmName("invokeStaticAs")
 inline fun <T> Any.invokeStatic(name: String,
                                 vararg args: Any?) =
-        XposedHelpers.callStaticMethod(this::class.java, name, *args) as T
+        XposedHelpers.callStaticMethod(toJavaClass(), name, *args) as T
 
 /**
  * Calls the static method with the name and the args and returns the result

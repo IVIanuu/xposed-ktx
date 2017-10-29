@@ -26,7 +26,6 @@ import de.robv.android.xposed.XC_MethodReplacement
 import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import java.lang.reflect.Constructor
-import java.lang.reflect.Member
 import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
@@ -36,9 +35,9 @@ import kotlin.reflect.KClass
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
-    private var before: ((MethodHookParam) -> Unit)? = null
-    private var after: ((MethodHookParam) -> Unit)? = null
-    private var replace: ((MethodHookParam) -> Any?)? = null
+    private var before: ((Param) -> Unit)? = null
+    private var after: ((Param) -> Unit)? = null
+    private var replace: ((Param) -> Any?)? = null
     private var returnConstant: Any? = null
 
     private var beforeSet = false
@@ -64,7 +63,7 @@ class MethodHook {
     /**
      * Will be invoked before the hooked method
      */
-    fun before(action: (MethodHookParam) -> Unit) {
+    fun before(action: (Param) -> Unit) {
         this.before = action
         this.beforeSet = true
     }
@@ -72,7 +71,7 @@ class MethodHook {
     /**
      * Will be invoked after the hooked method
      */
-    fun after(action: (MethodHookParam) -> Unit) {
+    fun after(action: (Param) -> Unit) {
         this.after = action
         this.afterSet = true
     }
@@ -80,7 +79,7 @@ class MethodHook {
     /**
      * Replaces the hooked method and returns the result of the function
      */
-    fun replace(action: (MethodHookParam) -> Any?) {
+    fun replace(action: (Param) -> Any?) {
         this.replace = action
         this.replaceSet = true
     }
@@ -122,16 +121,17 @@ class MethodHook {
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
         replaceSet -> {
             object : XC_MethodReplacement(priority) {
-                override fun replaceHookedMethod(param: MethodHookParam) = replace!!(param)
+                override fun replaceHookedMethod(param: MethodHookParam): Any? =
+                        replace?.invoke(Param(param))
             }
         }
         beforeSet || afterSet -> {
             object : XC_MethodHook(priority) {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    before?.let { it(param) }
+                    before?.let { it(Param(param)) }
                 }
                 override fun afterHookedMethod(param: MethodHookParam) {
-                    after?.let { it(param) }
+                    after?.let { it(Param(param)) }
                 }
             }
         }
@@ -140,11 +140,67 @@ class MethodHook {
 }
 
 /**
+ * Wraps a method hook param
+ */
+class Param(private val value: MethodHookParam) {
+    /**
+     * The instance
+     */
+    val instance = value.thisObject
+    /**
+     * The hooked method
+     */
+    val method = value.method
+    /**
+     * Args of the hooked method
+     */
+    val args = value.args
+    /**
+     * The result of the hooked method
+     */
+    var result: Any?
+        get() = value.result
+        set(value) { this.value.result = value }
+    /**
+     * The exception of the hooked method
+     */
+    var exception: Throwable?
+        get() = value.throwable
+        set(value) { this.value.throwable = value }
+
+    /**
+     * Returns the return value or throws the exception
+     */
+    fun returns(): Any? = value.resultOrThrowable
+
+    /**
+     * Returns the instance as t
+     */
+    fun <T> instance() = value.thisObject as T
+
+    /**
+     * Returns the result as t
+     */
+    fun <T> result() = value.result as T?
+
+    /**
+     * Returns the arg at the index as t
+     */
+    @JvmName("argAs")
+    fun <T> arg(index: Int) = args[index] as T
+
+    /**
+     * Returns the arg at the index
+     */
+    fun arg(index: Int) = args[index]
+}
+
+/**
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
 inline fun Class<*>.hook(methodName: String = "",
-                  init: MethodHook.() -> Unit): Set<Unhook> {
+                         init: MethodHook.() -> Unit): Set<Unhook> {
     val hook = MethodHook()
     init(hook)
     return if (methodName.isEmpty()) {

@@ -24,7 +24,7 @@ import de.robv.android.xposed.XposedBridge
  * Logs to the xposed bridge
  */
 inline fun Any.logX(func: () -> String) {
-    XposedBridge.log(this::class.java.name + " " + func())
+    XposedBridge.log(func())
 }
 
 /**

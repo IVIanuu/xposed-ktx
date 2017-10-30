@@ -18,7 +18,7 @@ package com.ivianuu.xposedextensions.sample
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Window
+import com.ivianuu.xposedextensions.bindField
 import com.ivianuu.xposedextensions.function0
 
 class MainActivity : AppCompatActivity() {
@@ -26,5 +26,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
     }
+
+    val hehse by bindField("s")
+    val hehe by function0<Int>("")
 }

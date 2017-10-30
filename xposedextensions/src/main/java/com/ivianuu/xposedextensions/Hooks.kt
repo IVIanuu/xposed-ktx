@@ -18,7 +18,6 @@
 
 package com.ivianuu.xposedextensions
 
-import android.app.Activity
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam
 import de.robv.android.xposed.XC_MethodHook.Unhook

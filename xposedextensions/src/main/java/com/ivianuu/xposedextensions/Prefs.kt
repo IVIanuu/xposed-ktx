@@ -123,8 +123,7 @@ fun XSharedPreferences.reloadAndGetString(key: String, default: String = DEFAULT
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getString(key: String): String = getString(key,
-        DEFAULT_STRING)
+fun XSharedPreferences.getString(key: String): String = getString(key, DEFAULT_STRING)
 
 /**
  * Reloads the prefs the and returns the value for the key

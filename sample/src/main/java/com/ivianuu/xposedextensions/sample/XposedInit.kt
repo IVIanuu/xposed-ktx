@@ -50,5 +50,5 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     }
 
     private val Window.shouldCloseOnOutsideTouch
-            by function2<Boolean>("shouldCloseOnOutsideTouch")
+            by function<Boolean>("shouldCloseOnOutsideTouch")
 }

@@ -23,11 +23,6 @@ import com.ivianuu.xposedextensions.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val Window.floating by additionalField("jooo")
-    private val floating by field("")
-
-    private val Window.somePrivateMethod by function<Boolean>("")
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

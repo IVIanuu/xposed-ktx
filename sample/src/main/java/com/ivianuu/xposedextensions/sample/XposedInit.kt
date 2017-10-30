@@ -21,11 +21,21 @@ import android.view.Window
 import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import de.robv.android.xposed.*
+import de.robv.android.xposed.callbacks.XC_InitPackageResources
 
 /**
  * Xposed init
  */
-class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage {
+class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInitPackageResources {
+    override fun handleInitPackageResources(resparam: XC_InitPackageResources.InitPackageResourcesParam) {
+        resparam.res.hook {
+            replace(0, "")
+
+            hookLayout(0) {
+
+            }
+        }
+    }
 
     override fun initZygote(startupParam: IXposedHookZygoteInit.StartupParam) {
         logX { "init zygote" }

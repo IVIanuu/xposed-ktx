@@ -23,13 +23,13 @@ import de.robv.android.xposed.XposedBridge
 /**
  * Logs to the xposed bridge
  */
-inline fun logX(func: () -> String) {
-    XposedBridge.log(func())
+inline fun Any.logX(func: () -> String) {
+    XposedBridge.log(this::class.java.name + " " + func())
 }
 
 /**
  * Logs to the xposed bridge
  */
-inline fun logX(throwable: Throwable) {
+inline fun Any.logX(throwable: Throwable) {
     XposedBridge.log(throwable)
 }

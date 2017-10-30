@@ -49,7 +49,7 @@ fun Any.nullableField(name: String) = field<Any?>(name)
  * Returns a static read write field which uses the name to get and set it
  */
 @JvmName("staticFieldAs")
-fun <T> Any.staticField(name: String) =  object : ReadWriteProperty<Any, T> {
+fun <T> Any.staticField(name: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.get<T>(name)
 

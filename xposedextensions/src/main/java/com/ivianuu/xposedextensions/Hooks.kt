@@ -213,7 +213,7 @@ inline fun Class<*>.hook(methodName: String = "",
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
-fun Class<*>.hook(methodName: String = "",
+inline fun Class<*>.hook(methodName: String = "",
                   vararg args: Any,
                   init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
@@ -229,7 +229,7 @@ fun Class<*>.hook(methodName: String = "",
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
-fun KClass<*>.hook(methodName: String = "",
+inline fun KClass<*>.hook(methodName: String = "",
                    init: MethodHook.() -> Unit): Set<Unhook> {
     val hook = MethodHook()
     init(hook)
@@ -244,7 +244,7 @@ fun KClass<*>.hook(methodName: String = "",
  * Hooks all methods with name
  * If the name is empty it will the constructors
  */
-fun KClass<*>.hook(methodName: String = "",
+inline fun KClass<*>.hook(methodName: String = "",
                    vararg args: Any,
                    init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
@@ -259,7 +259,7 @@ fun KClass<*>.hook(methodName: String = "",
 /**
  * Hooks this constructor
  */
-fun Constructor<*>.hook(init: MethodHook.() -> Unit): Unhook {
+inline fun Constructor<*>.hook(init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedBridge.hookMethod(this, hook.build())
@@ -268,7 +268,7 @@ fun Constructor<*>.hook(init: MethodHook.() -> Unit): Unhook {
 /**
  * Hooks this method
  */
-fun Method.hook(init: MethodHook.() -> Unit): Unhook {
+inline fun Method.hook(init: MethodHook.() -> Unit): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedBridge.hookMethod(this, hook.build())

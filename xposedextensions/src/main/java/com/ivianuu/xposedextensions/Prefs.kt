@@ -1,3 +1,21 @@
+/*
+ * Copyright 2017 Manuel Wrage
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.ivianuu.xposedextensions
+
 import de.robv.android.xposed.XSharedPreferences
 
 /*
@@ -49,7 +67,8 @@ fun XSharedPreferences.reloadAndGetBoolean(key: String, default: Boolean = DEFAU
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getBoolean(key: String): Boolean = getBoolean(key, DEFAULT_BOOLEAN)
+fun XSharedPreferences.getBoolean(key: String): Boolean = getBoolean(key,
+        DEFAULT_BOOLEAN)
 
 /**
  * Reloads the prefs the and returns the value for the key
@@ -62,7 +81,8 @@ fun XSharedPreferences.reloadAndGetFloat(key: String, default: Float = DEFAULT_F
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getFloat(key: String): Float = getFloat(key, DEFAULT_FLOAT)
+fun XSharedPreferences.getFloat(key: String): Float = getFloat(key,
+        DEFAULT_FLOAT)
 
 /**
  * Reloads the prefs the and returns the value for the key
@@ -75,7 +95,8 @@ fun XSharedPreferences.reloadAndGetInt(key: String, default: Int = DEFAULT_INT):
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getInt(key: String): Int = getInt(key, DEFAULT_INT)
+fun XSharedPreferences.getInt(key: String): Int = getInt(key,
+        DEFAULT_INT)
 
 /**
  * Reloads the prefs the and returns the value for the key
@@ -88,7 +109,8 @@ fun XSharedPreferences.reloadAndGetLong(key: String, default: Long = DEFAULT_LON
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getLong(key: String): Long = getLong(key, DEFAULT_LONG)
+fun XSharedPreferences.getLong(key: String): Long = getLong(key,
+        DEFAULT_LONG)
 
 /**
  * Reloads the prefs the and returns the value for the key
@@ -101,7 +123,8 @@ fun XSharedPreferences.reloadAndGetString(key: String, default: String = DEFAULT
 /**
  * Returns the value for the key
  */
-fun XSharedPreferences.getString(key: String): String = getString(key, DEFAULT_STRING)
+fun XSharedPreferences.getString(key: String): String = getString(key,
+        DEFAULT_STRING)
 
 /**
  * Reloads the prefs the and returns the value for the key

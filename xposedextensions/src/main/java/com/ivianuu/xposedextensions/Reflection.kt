@@ -353,235 +353,235 @@ class Method<out R>(private val getter: (Any) -> R): ReadOnlyProperty<Any, R> {
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function0As")
-fun <T> function0(name: String) = Method<() -> T> { receiver ->
+fun <T> Any.function0(name: String) = Method<() -> T> { receiver ->
     { receiver.invoke<T>(name) }
 }
 
 /**
- * Returns a function which invokes the method with name and returns the result
+ * Returns a Any.function which invokes the method with name and returns the result
  */
-fun function0(name: String) = function0<Any>(name)
+fun Any.function0(name: String) = function0<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function0Safe(name: String) = function0<Any?>(name)
+fun Any.function0Safe(name: String) = function0<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function1As")
-fun <T> function1(name: String) = Method<(Any?) -> T> { receiver ->
+fun <T> Any.function1(name: String) = Method<(Any?) -> T> { receiver ->
     { p1 -> receiver.invoke<T>(name, p1) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function1(name: String) = function1<Any>(name)
+fun Any.function1(name: String) = function1<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function1Safe(name: String) = function1<Any?>(name)
+fun Any.function1Safe(name: String) = function1<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function2As")
-fun <T> function2(name: String) = Method<(Any?, Any?) -> T> { receiver ->
+fun <T> Any.function2(name: String) = Method<(Any?, Any?) -> T> { receiver ->
     { p1, p2 -> receiver.invoke<T>(name, p1, p2) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function2(name: String) = function2<Any>(name)
+fun Any.function2(name: String) = function2<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function2Safe(name: String) = function2<Any?>(name)
+fun Any.function2Safe(name: String) = function2<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function3As")
-fun <T> function3(name: String) = Method<(Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function3(name: String) = Method<(Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3 -> receiver.invoke<T>(name, p1, p2, p3) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function3(name: String) = function3<Any>(name)
+fun Any.function3(name: String) = function3<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function3Safe(name: String) = function3<Any?>(name)
+fun Any.function3Safe(name: String) = function3<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function4As")
-fun <T> function4(name: String) = Method<(Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function4(name: String) = Method<(Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4 -> receiver.invoke<T>(name, p1, p2, p3, p4) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function4(name: String) = function4<Any>(name)
+fun Any.function4(name: String) = function4<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function4Safe(name: String) = function4<Any?>(name)
+fun Any.function4Safe(name: String) = function4<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function5As")
-fun <T> function5(name: String) = Method<(Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function5(name: String) = Method<(Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function5(name: String) = function5<Any>(name)
+fun Any.function5(name: String) = function5<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function5Safe(name: String) = function5<Any?>(name)
+fun Any.function5Safe(name: String) = function5<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function6As")
-fun <T> function6(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function6(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function6(name: String) = function6<Any>(name)
+fun Any.function6(name: String) = function6<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function6Safe(name: String) = function6<Any?>(name)
+fun Any.function6Safe(name: String) = function6<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function7As")
-fun <T> function7(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function7(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function7(name: String) = function7<Any>(name)
+fun Any.function7(name: String) = function7<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function7Safe(name: String) = function7<Any?>(name)
+fun Any.function7Safe(name: String) = function7<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function8As")
-fun <T> function8(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function8(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7, p8 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function8(name: String) = function8<Any>(name)
+fun Any.function8(name: String) = function8<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function8Safe(name: String) = function8<Any?>(name)
+fun Any.function8Safe(name: String) = function8<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function9As")
-fun <T> function9(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function9(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7, p8, p9 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function9(name: String) = function9<Any>(name)
+fun Any.function9(name: String) = function9<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function9Safe(name: String) = function9<Any?>(name)
+fun Any.function9Safe(name: String) = function9<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function10As")
-fun <T> function10(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function10(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function10(name: String) = function10<Any>(name)
+fun Any.function10(name: String) = function10<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function10Safe(name: String) = function10<Any?>(name)
+fun Any.function10Safe(name: String) = function10<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function11As")
-fun <T> function11(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function11(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function11(name: String) = function11<Any>(name)
+fun Any.function11(name: String) = function11<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function11Safe(name: String) = function11<Any?>(name)
+fun Any.function11Safe(name: String) = function11<Any?>(name)
 
 /**
  * Return a function which invokes the method with the name and returns the result
  */
 @JvmName("function12As")
-fun <T> function12(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
+fun <T> Any.function12(name: String) = Method<(Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?, Any?) -> T> { receiver ->
     { p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12 -> receiver.invoke<T>(name, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12) }
 }
 
 /**
  * Returns a function which invokes the method with name and returns the result
  */
-fun function12(name: String) = function12<Any>(name)
+fun Any.function12(name: String) = function12<Any>(name)
 
 /**
  * Returns a function which invokes the method with name and returns the result which might be null
  */
-fun function12Safe(name: String) = function12<Any?>(name)
+fun Any.function12Safe(name: String) = function12<Any?>(name)
 
 // HELPER
 

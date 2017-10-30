@@ -44,7 +44,7 @@ class XposedInit: IXposedHookZygoteInit, IXposedHookLoadPackage, IXposedHookInit
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
             Activity::class.hook("onTouchEvent") {
-                before { } // do something before on create
+                before { }
             }
         }
     }

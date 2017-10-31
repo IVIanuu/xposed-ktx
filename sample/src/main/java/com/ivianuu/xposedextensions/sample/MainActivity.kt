@@ -18,6 +18,7 @@ package com.ivianuu.xposedextensions.sample
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.ivianuu.xposedextensions.function
 
 class MainActivity : AppCompatActivity() {
 

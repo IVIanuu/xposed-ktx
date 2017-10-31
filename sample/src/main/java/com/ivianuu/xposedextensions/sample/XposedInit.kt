@@ -22,10 +22,16 @@ import com.ivianuu.xposedextensions.*
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 import de.robv.android.xposed.*
 
+typealias ActivityRecord = Any
+typealias ActivityStack = Any
+
 /**
  * Xposed init
  */
 class XposedInit: IXposedHookLoadPackage {
+
+    private fun Window.shouldCloseOnOutsideTouch(vararg args: Any)
+            = invoke<Boolean>("shouldCloseOnOutsideTouch", *args)
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
@@ -41,7 +47,4 @@ class XposedInit: IXposedHookLoadPackage {
             }
         }
     }
-
-    private val Window.shouldCloseOnOutsideTouch
-            by function<Boolean>("shouldCloseOnOutsideTouch")
 }

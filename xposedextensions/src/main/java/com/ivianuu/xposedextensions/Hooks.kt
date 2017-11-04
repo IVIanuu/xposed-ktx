@@ -18,7 +18,6 @@
 
 package com.ivianuu.xposedextensions
 
-import android.view.Window
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam
 import de.robv.android.xposed.XC_MethodHook.Unhook
@@ -35,9 +34,9 @@ import kotlin.reflect.KClass
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
-    private var before: ((Param) -> Unit)? = null
-    private var after: ((Param) -> Unit)? = null
-    private var replace: ((Param) -> Any?)? = null
+    private var before: ((MethodHookParam) -> Unit)? = null
+    private var after: ((MethodHookParam) -> Unit)? = null
+    private var replace: ((MethodHookParam) -> Any?)? = null
     private var returnConstant: Any? = null
 
     private var beforeSet = false
@@ -63,7 +62,7 @@ class MethodHook {
     /**
      * Will be invoked before the hooked method
      */
-    fun before(action: (Param) -> Unit) {
+    fun before(action: (MethodHookParam) -> Unit) {
         this.before = action
         this.beforeSet = true
     }
@@ -71,7 +70,7 @@ class MethodHook {
     /**
      * Will be invoked after the hooked method
      */
-    fun after(action: (Param) -> Unit) {
+    fun after(action: (MethodHookParam) -> Unit) {
         this.after = action
         this.afterSet = true
     }
@@ -79,7 +78,7 @@ class MethodHook {
     /**
      * Replaces the hooked method and returns the result of the function
      */
-    fun replace(action: (Param) -> Any?) {
+    fun replace(action: (MethodHookParam) -> Any?) {
         this.replace = action
         this.replaceSet = true
     }
@@ -122,66 +121,21 @@ class MethodHook {
         replaceSet -> {
             object : XC_MethodReplacement(priority) {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =
-                        replace?.invoke(Param(param))
+                        replace?.invoke(param)
             }
         }
         beforeSet || afterSet -> {
             object : XC_MethodHook(priority) {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    before?.let { it(Param(param)) }
+                    before?.invoke(param)
                 }
                 override fun afterHookedMethod(param: MethodHookParam) {
-                    after?.let { it(Param(param)) }
+                    after?.invoke(param)
                 }
             }
         }
         else -> throw IllegalArgumentException("invalid configuration")
     }
-}
-
-/**
- * Wraps a method hook param
- */
-class Param(private val value: MethodHookParam) {
-    /**
-     * The instance
-     */
-    val instance = value.thisObject
-    /**
-     * The hooked method
-     */
-    val method = value.method
-    /**
-     * Args of the hooked method
-     */
-    val args = value.args
-    /**
-     * The result of the hooked method
-     */
-    var result: Any?
-        get() = value.result
-        set(value) { this.value.result = value }
-    /**
-     * The exception of the hooked method
-     */
-    var exception: Throwable?
-        get() = value.throwable
-        set(value) { this.value.throwable = value }
-
-    /**
-     * Returns the return value or throws the exception
-     */
-    fun returns(): Any? = value.resultOrThrowable
-
-    /**
-     * Returns the instance as t
-     */
-    fun <T> instance() = value.thisObject as T
-
-    /**
-     * Returns the result as t
-     */
-    fun <T> result() = value.result as T?
 }
 
 /**
@@ -281,3 +235,16 @@ inline fun Method.hook(init: MethodHook.() -> Unit): Unhook {
     init(hook)
     return XposedBridge.hookMethod(this, hook.build())
 }
+
+// METHOD HOOK PARAM
+
+/**
+ * Returns the this object as T
+ */
+fun <T> MethodHookParam.thisObject() = thisObject as T
+
+/**
+ * Returns the result as T
+ */
+fun <T> MethodHookParam.result() = result as T
+

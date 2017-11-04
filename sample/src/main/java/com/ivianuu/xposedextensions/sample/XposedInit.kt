@@ -36,7 +36,7 @@ class XposedInit: IXposedHookLoadPackage {
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
         Activity::class.hookAllMethods("onCreate") {
-            after {
+            afterHookedMethod {
                 it.thisObject<Activity>().window.floating = true
             }
         }

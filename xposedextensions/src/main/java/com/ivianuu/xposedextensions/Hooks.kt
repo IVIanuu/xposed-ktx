@@ -34,14 +34,14 @@ import kotlin.reflect.KClass
 class MethodHook {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
-    private var before: ((MethodHookParam) -> Unit)? = null
-    private var after: ((MethodHookParam) -> Unit)? = null
-    private var replace: ((MethodHookParam) -> Any?)? = null
+    private var beforeHookedMethod: ((MethodHookParam) -> Unit)? = null
+    private var afterHookedMethod: ((MethodHookParam) -> Unit)? = null
+    private var replaceHookedMethod: ((MethodHookParam) -> Any?)? = null
     private var returnConstant: Any? = null
 
-    private var beforeSet = false
-    private var afterSet = false
-    private var replaceSet = false
+    private var beforeHookedMethodSet = false
+    private var afterHookedMethodSet = false
+    private var replaceHookedMethodSet = false
     private var returnConstantSet = false
     private var doNothingSet = false
 
@@ -60,27 +60,27 @@ class MethodHook {
     }
 
     /**
-     * Will be invoked before the hooked method
+     * Will be invoked beforeHookedMethod the hooked method
      */
-    fun before(action: (MethodHookParam) -> Unit) {
-        this.before = action
-        this.beforeSet = true
+    fun beforeHookedMethod(action: (MethodHookParam) -> Unit) {
+        this.beforeHookedMethod = action
+        this.beforeHookedMethodSet = true
     }
 
     /**
-     * Will be invoked after the hooked method
+     * Will be invoked afterHookedMethod the hooked method
      */
-    fun after(action: (MethodHookParam) -> Unit) {
-        this.after = action
-        this.afterSet = true
+    fun afterHookedMethod(action: (MethodHookParam) -> Unit) {
+        this.afterHookedMethod = action
+        this.afterHookedMethodSet = true
     }
 
     /**
      * Replaces the hooked method and returns the result of the function
      */
-    fun replace(action: (MethodHookParam) -> Any?) {
-        this.replace = action
-        this.replaceSet = true
+    fun replaceHookedMethod(action: (MethodHookParam) -> Any?) {
+        this.replaceHookedMethod = action
+        this.replaceHookedMethodSet = true
     }
 
     /**
@@ -118,19 +118,19 @@ class MethodHook {
     fun build(): XC_MethodHook = when {
         doNothingSet -> XC_MethodReplacement.DO_NOTHING
         returnConstantSet -> XC_MethodReplacement.returnConstant(priority, returnConstant)
-        replaceSet -> {
+        replaceHookedMethodSet -> {
             object : XC_MethodReplacement(priority) {
                 override fun replaceHookedMethod(param: MethodHookParam): Any? =
-                        replace?.invoke(param)
+                        replaceHookedMethod?.invoke(param)
             }
         }
-        beforeSet || afterSet -> {
+        beforeHookedMethodSet || afterHookedMethodSet -> {
             object : XC_MethodHook(priority) {
                 override fun beforeHookedMethod(param: MethodHookParam) {
-                    before?.invoke(param)
+                    beforeHookedMethod?.invoke(param)
                 }
                 override fun afterHookedMethod(param: MethodHookParam) {
-                    after?.invoke(param)
+                    afterHookedMethod?.invoke(param)
                 }
             }
         }

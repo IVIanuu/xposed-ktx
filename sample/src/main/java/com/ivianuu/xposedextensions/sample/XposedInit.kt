@@ -30,16 +30,16 @@ typealias ActivityStack = Any
  */
 class XposedInit: IXposedHookLoadPackage {
 
-    private var Window.floating by additionalField<Boolean>("floatingWindow")
+    private var Window.floating by bindAdditionalField<Boolean>("floatingWindow")
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        Activity::class.hook("onCreate") {
+        Activity::class.hookAllMethods("onCreate") {
             after {
                 it.instance<Activity>().window.floating = true
             }
         }
 
-        Activity::class.hook("onDestroy") {
+        Activity::class.hookAllMethods("onDestroy") {
             after {
                 it.instance<Activity>().window.floating
             }

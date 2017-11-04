@@ -30,20 +30,18 @@ typealias ActivityStack = Any
  */
 class XposedInit: IXposedHookLoadPackage {
 
-    private fun Window.shouldCloseOnOutsideTouch(vararg args: Any)
-            = invoke<Boolean>("shouldCloseOnOutsideTouch", *args)
+    private var Window.floating by additionalField<Boolean>("floatingWindow")
 
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        if (lpparam.packageName == "com.ivianuu.xposedextensions.sample") {
-            Activity::class.hook("onTouchEvent") {
-                before { param ->
-                    param.instance<Activity>().apply {
-                        if (window.shouldCloseOnOutsideTouch(
-                                this, param.args[0])) {
-                            finish()
-                        }
-                    }
-                }
+        Activity::class.hook("onCreate") {
+            after {
+                it.instance<Activity>().window.floating = true
+            }
+        }
+
+        Activity::class.hook("onDestroy") {
+            after {
+                it.instance<Activity>().window.floating
             }
         }
     }

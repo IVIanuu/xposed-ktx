@@ -14,22 +14,15 @@
  * limitations under the License.
  */
 
-@file:Suppress("NOTHING_TO_INLINE")
 
 package com.ivianuu.xposedextensions
 
 import de.robv.android.xposed.XposedBridge
 
-/**
- * Logs to the xposed bridge
- */
 inline fun Any.logX(func: () -> String) {
-    XposedBridge.log(func())
+    XposedBridge.log(this::class.java.simpleName + ": " + func())
 }
 
-/**
- * Logs to the xposed bridge
- */
-inline fun Any.logX(throwable: Throwable) {
+fun Any.logX(throwable: Throwable) {
     XposedBridge.log(throwable)
 }

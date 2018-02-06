@@ -19,12 +19,6 @@ package com.ivianuu.xposedextensions
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
-// DELEGATED FIELDS
-
-/**
- * Returns a read write field which uses the name to get and set it
- */
-@JvmName("bindFieldAs")
 fun <T> Any.bindField(name: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>): T = thisRef.getField<T>(name)
@@ -34,20 +28,6 @@ fun <T> Any.bindField(name: String) = object : ReadWriteProperty<Any, T> {
     }
 }
 
-/**
- * Returns a read write field which uses the name to get and set it
- */
-fun Any.bindField(name: String) = bindField<Any>(name)
-
-/**
- * Returns a nullable read write field which uses the name to get and set it
- */
-fun Any.bindNullableField(name: String) = bindField<Any?>(name)
-
-/**
- * Returns a static read write field which uses the name to get and set it
- */
-@JvmName("bindStaticFieldAs")
 fun <T> Any.bindStaticField(name: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getStaticField<T>(name)
@@ -57,49 +37,16 @@ fun <T> Any.bindStaticField(name: String) = object : ReadWriteProperty<Any, T> {
     }
 }
 
-/**
- * Returns a static read write field which uses the name to get and set it
- */
-fun Any.bindStaticField(name: String) = bindStaticField<Any>(name)
-
-/**
- * Returns a nullable static read write field which uses the name to get and set it
- */
-fun Any.bindNullableStaticField(name: String) = bindStaticField<Any?>(name)
-
-/**
- * Returns a additional read write field which uses the name to get and set it
- */
-@JvmName("bindAdditionalFieldAs")
 fun <T> Any.bindAdditionalField(name: String) = object : ReadWriteProperty<Any, T> {
     override fun getValue(thisRef: Any, property: KProperty<*>): T {
-        val value = thisRef.getAdditionalField<T>(name)
-        logX { "retrieving field from ${thisRef.toJavaClass().name} " +
-                "value is $value" }
-        return value
+        return thisRef.getAdditionalField(name)
     }
 
     override fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
-        logX { "setting field to ${thisRef.toJavaClass().name} " +
-                "new value is $value" }
         thisRef.setAdditionalField(name, value)
     }
 }
 
-/**
- * Returns a additional read write field which uses the name to get and set it
- */
-fun Any.bindAdditionalField(name: String) = bindAdditionalField<Any>(name)
-
-/**
- * Returns a nullable additional read write field which uses the name to get and set it
- */
-fun Any.bindNullableAdditionalField(name: String) = bindAdditionalField<Any?>(name)
-
-/**
- * Returns a additional static read write field which uses the name to get and set it
- */
-@JvmName("bindAdditionalStaticFieldAs")
 fun <T> Any.bindAdditionalStaticField(name: String) = object : ReadWriteProperty<Any, T> {
 
     override fun getValue(thisRef: Any, property: KProperty<*>) = thisRef.getAdditionalStaticField<T>(name)
@@ -108,13 +55,3 @@ fun <T> Any.bindAdditionalStaticField(name: String) = object : ReadWriteProperty
         thisRef.setAdditionalStaticField(name, value)
     }
 }
-
-/**
- * Returns a additional read write field which uses the name to get and set it
- */
-fun Any.bindAdditionalStaticField(name: String) = bindAdditionalStaticField<Any>(name)
-
-/**
- * Returns a nullable additional read write field which uses the name to get and set it
- */
-fun Any.bindNullableAdditionalStaticField(name: String) = bindAdditionalStaticField<Any?>(name)

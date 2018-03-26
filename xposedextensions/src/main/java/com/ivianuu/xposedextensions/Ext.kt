@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-
 package com.ivianuu.xposedextensions
 
-import de.robv.android.xposed.XposedBridge
-
-inline fun logX(func: () -> String) {
-    XposedBridge.log(func())
-}
-
-fun logX(throwable: Throwable) {
-    XposedBridge.log(throwable)
+fun tryAndPrint(action: () -> Unit) {
+    try {
+        action()
+    } catch (e: Exception) {
+        logX(e)
+    }
 }

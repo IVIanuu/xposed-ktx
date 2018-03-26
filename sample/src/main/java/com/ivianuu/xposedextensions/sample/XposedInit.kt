@@ -16,11 +16,6 @@
 
 package com.ivianuu.xposedextensions.sample
 
-import android.app.Activity
-import android.view.Window
-import com.ivianuu.xposedextensions.bindAdditionalField
-import com.ivianuu.xposedextensions.hookAllMethods
-import com.ivianuu.xposedextensions.thisObject
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
@@ -32,13 +27,6 @@ typealias ActivityStack = Any
  */
 class XposedInit: IXposedHookLoadPackage {
 
-    private var Window.floating by bindAdditionalField<Boolean>("floatingWindow")
-
     override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
-        Activity::class.hookAllMethods("onCreate") {
-            afterHookedMethod {
-                it.thisObject<Activity>().window.floating = true
-            }
-        }
     }
 }

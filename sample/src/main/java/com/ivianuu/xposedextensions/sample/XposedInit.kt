@@ -19,9 +19,6 @@ package com.ivianuu.xposedextensions.sample
 import de.robv.android.xposed.IXposedHookLoadPackage
 import de.robv.android.xposed.callbacks.XC_LoadPackage
 
-typealias ActivityRecord = Any
-typealias ActivityStack = Any
-
 /**
  * Xposed init
  */

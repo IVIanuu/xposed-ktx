@@ -84,7 +84,7 @@ class MethodHook {
         replaceHookedMethodSet -> {
             object : XC_MethodReplacement(priority) {
                 override fun replaceHookedMethod(param: MethodHookParam) =
-                        replaceHookedMethod?.invoke(param)
+                    replaceHookedMethod?.invoke(param)
             }
         }
         beforeHookedMethodSet || afterHookedMethodSet -> {
@@ -92,6 +92,7 @@ class MethodHook {
                 override fun beforeHookedMethod(param: MethodHookParam) {
                     beforeHookedMethod?.invoke(param)
                 }
+
                 override fun afterHookedMethod(param: MethodHookParam) {
                     afterHookedMethod?.invoke(param)
                 }
@@ -107,23 +108,29 @@ inline fun Class<*>.hookAllConstructors(init: MethodHook.() -> Unit): Set<Unhook
     return XposedBridge.hookAllConstructors(this, hook.build())
 }
 
-inline fun Class<*>.hookAllMethods(methodName: String,
-                                   init: MethodHook.() -> Unit): Set<Unhook> {
+inline fun Class<*>.hookAllMethods(
+    methodName: String,
+    init: MethodHook.() -> Unit
+): Set<Unhook> {
     val hook = MethodHook()
     init(hook)
     return XposedBridge.hookAllMethods(this, methodName, hook.build())
 }
 
-inline fun Class<*>.findAndHookConstructor(vararg args: Any,
-                                           init: MethodHook.() -> Unit): Unhook {
+inline fun Class<*>.findAndHookConstructor(
+    vararg args: Any,
+    init: MethodHook.() -> Unit
+): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedHelpers.findAndHookConstructor(this, *args, hook.build())
 }
 
-inline fun Class<*>.findAndHookMethod(methodName: String,
-                                      vararg args: Any,
-                                      init: MethodHook.() -> Unit): Unhook {
+inline fun Class<*>.findAndHookMethod(
+    methodName: String,
+    vararg args: Any,
+    init: MethodHook.() -> Unit
+): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedHelpers.findAndHookMethod(this, methodName, *args, hook.build())
@@ -135,23 +142,29 @@ inline fun KClass<*>.hookAllConstructors(init: MethodHook.() -> Unit): Set<Unhoo
     return XposedBridge.hookAllConstructors(this.java, hook.build())
 }
 
-inline fun KClass<*>.hookAllMethods(methodName: String,
-                                    init: MethodHook.() -> Unit): Set<Unhook> {
+inline fun KClass<*>.hookAllMethods(
+    methodName: String,
+    init: MethodHook.() -> Unit
+): Set<Unhook> {
     val hook = MethodHook()
     init(hook)
     return XposedBridge.hookAllMethods(this.java, methodName, hook.build())
 }
 
-inline fun KClass<*>.findAndHookConstructor(vararg args: Any,
-                                            init: MethodHook.() -> Unit): Unhook {
+inline fun KClass<*>.findAndHookConstructor(
+    vararg args: Any,
+    init: MethodHook.() -> Unit
+): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedHelpers.findAndHookConstructor(this.java, *args, hook.build())
 }
 
-inline fun KClass<*>.findAndHookMethod(methodName: String,
-                                       vararg args: Any,
-                                       init: MethodHook.() -> Unit): Unhook {
+inline fun KClass<*>.findAndHookMethod(
+    methodName: String,
+    vararg args: Any,
+    init: MethodHook.() -> Unit
+): Unhook {
     val hook = MethodHook()
     init(hook)
     return XposedHelpers.findAndHookMethod(this.java, methodName, *args, hook.build())

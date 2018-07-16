@@ -24,30 +24,33 @@ import kotlin.reflect.KClass
 // CLASS
 
 fun ClassLoader.findClass(className: String): Class<*> =
-        XposedHelpers.findClass(className, this)
+    XposedHelpers.findClass(className, this)
 
-fun ClassLoader.findClassIfExists(className: String): Class<*>?
-        = XposedHelpers.findClassIfExists(className, this)
+fun ClassLoader.findClassIfExists(className: String): Class<*>? =
+    XposedHelpers.findClassIfExists(className, this)
 
 fun <T> Any.newInstance(vararg args: Any?) =
-        XposedHelpers.newInstance(toJavaClass(), *args) as T
+    XposedHelpers.newInstance(toJavaClass(), *args) as T
 
-fun <T> Any.newInstance(parameterTypes: Array<Class<*>>,
-                               vararg args: Any?) =
-        XposedHelpers.newInstance(toJavaClass(), parameterTypes, *args) as T
+fun <T> Any.newInstance(
+    parameterTypes: Array<Class<*>>,
+    vararg args: Any?
+) =
+    XposedHelpers.newInstance(toJavaClass(), parameterTypes, *args) as T
 
 fun <T> Any.getField(name: String) = XposedHelpers.getObjectField(this, name) as T
 
 fun Any.setField(name: String, value: Any?) =
-        XposedHelpers.setObjectField(this, name, value)
+    XposedHelpers.setObjectField(this, name, value)
 
-fun <T> Any.getStaticField(name: String) = XposedHelpers.getStaticObjectField(toJavaClass(), name) as T
+fun <T> Any.getStaticField(name: String) =
+    XposedHelpers.getStaticObjectField(toJavaClass(), name) as T
 
 fun Any.setStaticField(name: String, value: Any?) =
-        XposedHelpers.setStaticObjectField(toJavaClass(), name, value)
+    XposedHelpers.setStaticObjectField(toJavaClass(), name, value)
 
 fun <T> Any.getAdditionalField(name: String) =
-        XposedHelpers.getAdditionalInstanceField(this, name) as T
+    XposedHelpers.getAdditionalInstanceField(this, name) as T
 
 fun Any.setAdditionalField(name: String, value: Any?) {
     XposedHelpers.setAdditionalInstanceField(this, name, value)
@@ -58,7 +61,7 @@ fun Any.removeAdditionalField(name: String) {
 }
 
 fun <T> Any.getAdditionalStaticField(name: String) =
-        XposedHelpers.getAdditionalStaticField(toJavaClass(), name) as T
+    XposedHelpers.getAdditionalStaticField(toJavaClass(), name) as T
 
 fun Any.setAdditionalStaticField(name: String, value: Any?) {
     XposedHelpers.setAdditionalStaticField(toJavaClass(), name, value)
@@ -68,23 +71,31 @@ fun Any.removeAdditionalStaticField(name: String) {
     XposedHelpers.removeAdditionalStaticField(toJavaClass(), name)
 }
 
-fun <T> Any.invokeFunction(name: String,
-                           vararg args: Any?) =
-        XposedHelpers.callMethod(this, name, *args) as T
+fun <T> Any.invokeFunction(
+    name: String,
+    vararg args: Any?
+) =
+    XposedHelpers.callMethod(this, name, *args) as T
 
-fun <T> Any.invokeFunction(name: String,
-                           parameterTypes: Array<Class<*>>,
-                           vararg args: Any?) =
-        XposedHelpers.callMethod(this, name, parameterTypes, *args) as T
+fun <T> Any.invokeFunction(
+    name: String,
+    parameterTypes: Array<Class<*>>,
+    vararg args: Any?
+) =
+    XposedHelpers.callMethod(this, name, parameterTypes, *args) as T
 
-fun <T> Any.invokeStaticFunction(name: String,
-                                vararg args: Any?) =
-        XposedHelpers.callStaticMethod(toJavaClass(), name, *args) as T
+fun <T> Any.invokeStaticFunction(
+    name: String,
+    vararg args: Any?
+) =
+    XposedHelpers.callStaticMethod(toJavaClass(), name, *args) as T
 
-fun <T> Any.invokeStaticFunction(name: String,
-                                parameterTypes: Array<Class<*>>,
-                                vararg args: Any?) =
-        XposedHelpers.callStaticMethod(toJavaClass(), name, parameterTypes, *args) as T
+fun <T> Any.invokeStaticFunction(
+    name: String,
+    parameterTypes: Array<Class<*>>,
+    vararg args: Any?
+) =
+    XposedHelpers.callStaticMethod(toJavaClass(), name, parameterTypes, *args) as T
 
 fun Any.toJavaClass(): Class<*> = when {
     this is Class<*> -> this

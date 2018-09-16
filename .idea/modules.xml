@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/XposedExtensions.iml" filepath="$PROJECT_DIR$/XposedExtensions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/XposedKtx.iml" filepath="$PROJECT_DIR$/XposedKtx.iml" />
       <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/sample/sample.iml" filepath="$PROJECT_DIR$/sample/sample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/xposedextensions/xposedextensions.iml" filepath="$PROJECT_DIR$/xposedextensions/xposedextensions.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xposedktx/xposedktx.iml" filepath="$PROJECT_DIR$/xposedktx/xposedktx.iml" />
     </modules>
   </component>
 </project>

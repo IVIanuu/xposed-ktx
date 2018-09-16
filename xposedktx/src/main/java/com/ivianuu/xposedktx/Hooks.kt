@@ -16,7 +16,7 @@
 
 @file:Suppress("UNCHECKED_CAST")
 
-package com.ivianuu.xposedextensions
+package com.ivianuu.xposedktx
 
 import de.robv.android.xposed.XC_MethodHook
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam

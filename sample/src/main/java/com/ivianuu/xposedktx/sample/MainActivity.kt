@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-package com.ivianuu.xposedextensions.sample
+package com.ivianuu.xposedktx.sample
 
-import de.robv.android.xposed.IXposedHookLoadPackage
-import de.robv.android.xposed.callbacks.XC_LoadPackage
+import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
-/**
- * Xposed init
- */
-class XposedInit: IXposedHookLoadPackage {
+class MainActivity : AppCompatActivity() {
 
-    override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
     }
 }

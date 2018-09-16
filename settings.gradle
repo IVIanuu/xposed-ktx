@@ -1,1 +1,1 @@
-include ':sample', ':xposedextensions'
+include ':sample', ':xposedktx'

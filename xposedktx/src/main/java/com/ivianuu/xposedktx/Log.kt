@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.ivianuu.xposedextensions.sample
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
+package com.ivianuu.xposedktx
 
-class MainActivity : AppCompatActivity() {
+import de.robv.android.xposed.XposedBridge
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
+inline fun logX(func: () -> String) {
+    XposedBridge.log(func())
+}
+
+fun logX(throwable: Throwable) {
+    XposedBridge.log(throwable)
 }

@@ -23,7 +23,7 @@ android {
     compileSdkVersion Versions.compileSdk
 
     defaultConfig {
-        applicationId "com.ivianuu.xposedextensions.sample"
+        applicationId "com.ivianuu.xposedktx.sample"
         minSdkVersion Versions.minSdk
         targetSdkVersion Versions.targetSdk
         versionCode Versions.versionCode
@@ -39,11 +39,7 @@ android {
 }
 
 dependencies {
-    implementation project(':xposedextensions')
-
-    implementation Deps.kotlinStdLib
-
-    implementation Deps.supportAppCompat
-
+    implementation Deps.androidxAppCompat
     compileOnly Deps.xposed
+    implementation project(':xposedktx')
 }

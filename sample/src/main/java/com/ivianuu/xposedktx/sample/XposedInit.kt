@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
+package com.ivianuu.xposedktx.sample
 
-package com.ivianuu.xposedextensions
+import de.robv.android.xposed.IXposedHookLoadPackage
+import de.robv.android.xposed.callbacks.XC_LoadPackage
 
-import de.robv.android.xposed.XposedBridge
+/**
+ * Xposed init
+ */
+class XposedInit: IXposedHookLoadPackage {
 
-inline fun logX(func: () -> String) {
-    XposedBridge.log(func())
-}
-
-fun logX(throwable: Throwable) {
-    XposedBridge.log(throwable)
+    override fun handleLoadPackage(lpparam: XC_LoadPackage.LoadPackageParam) {
+    }
 }

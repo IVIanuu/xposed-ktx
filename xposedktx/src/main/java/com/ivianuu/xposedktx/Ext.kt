@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package com.ivianuu.xposedextensions
+package com.ivianuu.xposedktx
 
-fun tryAndPrint(action: () -> Unit) {
+inline fun tryAndPrint(action: () -> Unit) {
     try {
         action()
     } catch (e: Exception) {

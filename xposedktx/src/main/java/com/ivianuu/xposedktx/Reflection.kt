@@ -29,25 +29,24 @@ fun ClassLoader.findClass(className: String): Class<*> =
 fun ClassLoader.findClassIfExists(className: String): Class<*>? =
     XposedHelpers.findClassIfExists(className, this)
 
-fun <T> Any.newInstance(vararg args: Any?) =
-    XposedHelpers.newInstance(toJavaClass(), *args) as T
+fun <T : Any> KClass<T>.newInstance(vararg args: Any?) =
+    XposedHelpers.newInstance(java)
 
-fun <T> Any.newInstance(
+fun <T : Any> KClass<T>.newInstance(
     parameterTypes: Array<Class<*>>,
     vararg args: Any?
-) =
-    XposedHelpers.newInstance(toJavaClass(), parameterTypes, *args) as T
+) = XposedHelpers.newInstance(java, parameterTypes, *args) as T
 
 fun <T> Any.getField(name: String) = XposedHelpers.getObjectField(this, name) as T
 
 fun Any.setField(name: String, value: Any?) =
     XposedHelpers.setObjectField(this, name, value)
 
-fun <T> Any.getStaticField(name: String) =
-    XposedHelpers.getStaticObjectField(toJavaClass(), name) as T
+fun <T> KClass<*>.getStaticField(name: String) =
+    XposedHelpers.getStaticObjectField(java, name) as T
 
-fun Any.setStaticField(name: String, value: Any?) =
-    XposedHelpers.setStaticObjectField(toJavaClass(), name, value)
+fun KClass<*>.setStaticField(name: String, value: Any?) =
+    XposedHelpers.setStaticObjectField(java, name, value)
 
 fun <T> Any.getAdditionalField(name: String) =
     XposedHelpers.getAdditionalInstanceField(this, name) as T
@@ -60,15 +59,15 @@ fun Any.removeAdditionalField(name: String) {
     XposedHelpers.removeAdditionalInstanceField(this, name)
 }
 
-fun <T> Any.getAdditionalStaticField(name: String) =
-    XposedHelpers.getAdditionalStaticField(toJavaClass(), name) as T
+fun <T> KClass<*>.getAdditionalStaticField(name: String) =
+    XposedHelpers.getAdditionalStaticField(java, name) as T
 
-fun Any.setAdditionalStaticField(name: String, value: Any?) {
-    XposedHelpers.setAdditionalStaticField(toJavaClass(), name, value)
+fun KClass<*>.setAdditionalStaticField(name: String, value: Any?) {
+    XposedHelpers.setAdditionalStaticField(java, name, value)
 }
 
-fun Any.removeAdditionalStaticField(name: String) {
-    XposedHelpers.removeAdditionalStaticField(toJavaClass(), name)
+fun KClass<*>.removeAdditionalStaticField(name: String) {
+    XposedHelpers.removeAdditionalStaticField(java, name)
 }
 
 fun <T> Any.invokeFunction(
@@ -84,21 +83,13 @@ fun <T> Any.invokeFunction(
 ) =
     XposedHelpers.callMethod(this, name, parameterTypes, *args) as T
 
-fun <T> Any.invokeStaticFunction(
+fun <T> KClass<*>.invokeStaticFunction(
     name: String,
     vararg args: Any?
-) =
-    XposedHelpers.callStaticMethod(toJavaClass(), name, *args) as T
+) = XposedHelpers.callStaticMethod(java, name, *args) as T
 
-fun <T> Any.invokeStaticFunction(
+fun <T> KClass<*>.invokeStaticFunction(
     name: String,
     parameterTypes: Array<Class<*>>,
     vararg args: Any?
-) =
-    XposedHelpers.callStaticMethod(toJavaClass(), name, parameterTypes, *args) as T
-
-fun Any.toJavaClass(): Class<*> = when {
-    this is Class<*> -> this
-    this is KClass<*> -> this.java
-    else -> this::class.java
-}
+) = XposedHelpers.callStaticMethod(java, name, parameterTypes, *args) as T

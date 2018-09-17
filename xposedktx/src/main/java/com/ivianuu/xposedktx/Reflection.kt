@@ -21,8 +21,6 @@ package com.ivianuu.xposedktx
 import de.robv.android.xposed.XposedHelpers
 import kotlin.reflect.KClass
 
-// CLASS
-
 fun ClassLoader.findClass(className: String): Class<*> =
     XposedHelpers.findClass(className, this)
 
@@ -30,12 +28,20 @@ fun ClassLoader.findClassIfExists(className: String): Class<*>? =
     XposedHelpers.findClassIfExists(className, this)
 
 fun <T : Any> KClass<T>.newInstance(vararg args: Any?) =
-    XposedHelpers.newInstance(java)
+    java.newInstance(*args)
+
+fun <T : Any> Class<T>.newInstance(vararg args: Any?) =
+    XposedHelpers.newInstance(this, *args)
 
 fun <T : Any> KClass<T>.newInstance(
     parameterTypes: Array<Class<*>>,
     vararg args: Any?
-) = XposedHelpers.newInstance(java, parameterTypes, *args) as T
+) = java.newInstance(parameterTypes, *args)
+
+fun <T : Any> Class<T>.newInstance(
+    parameterTypes: Array<Class<*>>,
+    vararg args: Any?
+) = XposedHelpers.newInstance(this, parameterTypes, *args) as T
 
 fun <T> Any.getField(name: String) = XposedHelpers.getObjectField(this, name) as T
 
@@ -43,10 +49,16 @@ fun Any.setField(name: String, value: Any?) =
     XposedHelpers.setObjectField(this, name, value)
 
 fun <T> KClass<*>.getStaticField(name: String) =
-    XposedHelpers.getStaticObjectField(java, name) as T
+    java.getStaticField<T>(name)
+
+fun <T> Class<*>.getStaticField(name: String) =
+    XposedHelpers.getStaticObjectField(this, name) as T
 
 fun KClass<*>.setStaticField(name: String, value: Any?) =
-    XposedHelpers.setStaticObjectField(java, name, value)
+    java.setStaticField(name, value)
+
+fun Class<*>.setStaticField(name: String, value: Any?) =
+    XposedHelpers.setStaticObjectField(this, name, value)
 
 fun <T> Any.getAdditionalField(name: String) =
     XposedHelpers.getAdditionalInstanceField(this, name) as T
@@ -60,36 +72,56 @@ fun Any.removeAdditionalField(name: String) {
 }
 
 fun <T> KClass<*>.getAdditionalStaticField(name: String) =
-    XposedHelpers.getAdditionalStaticField(java, name) as T
+    java.getAdditionalStaticField<T>(name)
 
-fun KClass<*>.setAdditionalStaticField(name: String, value: Any?) {
-    XposedHelpers.setAdditionalStaticField(java, name, value)
+fun <T> Class<*>.getAdditionalStaticField(name: String) =
+    XposedHelpers.getAdditionalStaticField(this, name) as T
+
+fun KClass<*>.setAdditionalStaticField(name: String, value: Any?) =
+    java.setAdditionalStaticField(name, value)
+
+fun Class<*>.setAdditionalStaticField(name: String, value: Any?) {
+    XposedHelpers.setAdditionalStaticField(this, name, value)
 }
 
-fun KClass<*>.removeAdditionalStaticField(name: String) {
-    XposedHelpers.removeAdditionalStaticField(java, name)
+fun KClass<*>.removeAdditionalStaticField(name: String) =
+    java.removeAdditionalStaticField(name)
+
+fun Class<*>.removeAdditionalStaticField(name: String) {
+    XposedHelpers.removeAdditionalStaticField(this, name)
 }
 
-fun <T> Any.invokeFunction(
+fun <T> Any.callMethod(
     name: String,
     vararg args: Any?
 ) =
     XposedHelpers.callMethod(this, name, *args) as T
 
-fun <T> Any.invokeFunction(
+fun <T> Any.callMethod(
     name: String,
     parameterTypes: Array<Class<*>>,
     vararg args: Any?
 ) =
     XposedHelpers.callMethod(this, name, parameterTypes, *args) as T
 
-fun <T> KClass<*>.invokeStaticFunction(
+fun <T> KClass<*>.callStaticMethod(
     name: String,
     vararg args: Any?
-) = XposedHelpers.callStaticMethod(java, name, *args) as T
+) = java.callStaticMethod<T>(name, *args)
 
-fun <T> KClass<*>.invokeStaticFunction(
+fun <T> Class<*>.callStaticMethod(
+    name: String,
+    vararg args: Any?
+) = XposedHelpers.callStaticMethod(this, name, *args) as T
+
+fun <T> KClass<*>.callStaticMethod(
     name: String,
     parameterTypes: Array<Class<*>>,
     vararg args: Any?
-) = XposedHelpers.callStaticMethod(java, name, parameterTypes, *args) as T
+) = java.callStaticMethod<T>(name, parameterTypes, *args)
+
+fun <T> Class<*>.callStaticMethod(
+    name: String,
+    parameterTypes: Array<Class<*>>,
+    vararg args: Any?
+) = XposedHelpers.callStaticMethod(this, name, parameterTypes, *args) as T

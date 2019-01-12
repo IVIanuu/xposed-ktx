@@ -16,9 +16,9 @@
 
 package com.ivianuu.xposedktx
 
-inline fun tryAndPrint(action: () -> Unit) {
+inline fun tryOrPrint(block: () -> Unit) {
     try {
-        action()
+        block()
     } catch (e: Exception) {
         logX(e)
     }

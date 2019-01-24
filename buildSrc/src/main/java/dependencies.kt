@@ -12,11 +12,11 @@ object Build {
 }
 
 object Versions {
-    const val androidGradlePlugin = "3.2.1"
+    const val androidGradlePlugin = "3.3.0"
 
-    const val androidx = "1.0.0"
+    const val androidxAppCompat = "1.0.0"
 
-    const val kotlin = "1.3.11"
+    const val kotlin = "1.3.20"
     const val mavenGradlePlugin = "2.1"
     const val xposed = "82"
 }
@@ -24,7 +24,7 @@ object Versions {
 object Deps {
     const val androidGradlePlugin = "com.android.tools.build:gradle:${Versions.androidGradlePlugin}"
 
-    const val androidxAppCompat = "androidx.appcompat:appcompat:${Versions.androidx}"
+    const val androidxAppCompat = "androidx.appcompat:appcompat:${Versions.androidxAppCompat}"
 
     const val kotlinGradlePlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${Versions.kotlin}"
     const val kotlinStdLib = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${Versions.kotlin}"

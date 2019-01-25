@@ -14,7 +14,7 @@ object Build {
 object Versions {
     const val androidGradlePlugin = "3.3.0"
 
-    const val androidxAppCompat = "1.0.0"
+    const val androidxAppCompat = "1.0.2"
 
     const val kotlin = "1.3.20"
     const val mavenGradlePlugin = "2.1"

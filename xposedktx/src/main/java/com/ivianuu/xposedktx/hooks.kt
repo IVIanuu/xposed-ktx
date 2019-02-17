@@ -26,7 +26,7 @@ import de.robv.android.xposed.XposedBridge
 import de.robv.android.xposed.XposedHelpers
 import kotlin.reflect.KClass
 
-class FunctionHook {
+class FunctionHookBuilder {
 
     private var priority = XC_MethodHook.PRIORITY_DEFAULT
     private var before: ((MethodHookParam) -> Unit)? = null
@@ -100,60 +100,38 @@ class FunctionHook {
     }
 }
 
-inline fun <reified T> hookAllConstructors(noinline block: FunctionHook.() -> Unit): Set<Unhook> =
-    hookAllConstructors(T::class, block)
-
-fun hookAllConstructors(type: KClass<*>, block: FunctionHook.() -> Unit): Set<Unhook> {
-    val hook = FunctionHook()
+fun KClass<*>.hookAllConstructors(block: FunctionHookBuilder.() -> Unit): Set<Unhook> {
+    val hook = FunctionHookBuilder()
     block(hook)
-    return XposedBridge.hookAllConstructors(type.java, hook.build())
+    return XposedBridge.hookAllConstructors(java, hook.build())
 }
 
-inline fun <reified T> hookAllFunctions(
+fun KClass<*>.hookAllFunctions(
     name: String,
-    noinline block: FunctionHook.() -> Unit
-): Set<Unhook> = hookAllFunctions(T::class, name, block)
-
-fun hookAllFunctions(
-    type: KClass<*>,
-    name: String,
-    block: FunctionHook.() -> Unit
+    block: FunctionHookBuilder.() -> Unit
 ): Set<Unhook> {
-    val hook = FunctionHook()
+    val hook = FunctionHookBuilder()
     block(hook)
-    return XposedBridge.hookAllMethods(type.java, name, hook.build())
+    return XposedBridge.hookAllMethods(java, name, hook.build())
 }
 
-inline fun <reified T> hookConstructor(
+fun KClass<*>.hookConstructor(
     vararg args: Any?,
-    noinline block: FunctionHook.() -> Unit
-): Unhook = hookConstructor(T::class, *args, block = block)
-
-fun hookConstructor(
-    type: KClass<*>,
-    vararg args: Any?,
-    block: FunctionHook.() -> Unit
+    block: FunctionHookBuilder.() -> Unit
 ): Unhook {
-    val hook = FunctionHook()
+    val hook = FunctionHookBuilder()
     block(hook)
-    return XposedHelpers.findAndHookConstructor(type.java, *args, hook.build())
+    return XposedHelpers.findAndHookConstructor(java, *args, hook.build())
 }
 
-inline fun <reified T> hookFunction(
+fun KClass<*>.hookFunction(
     name: String,
     vararg args: Any?,
-    noinline block: FunctionHook.() -> Unit
-): Unhook = hookFunction(T::class, name, *args, block = block)
-
-fun hookFunction(
-    type: KClass<*>,
-    name: String,
-    vararg args: Any?,
-    block: FunctionHook.() -> Unit
+    block: FunctionHookBuilder.() -> Unit
 ): Unhook {
-    val hook = FunctionHook()
+    val hook = FunctionHookBuilder()
     block(hook)
-    return XposedHelpers.findAndHookMethod(type.java, name, *args, hook.build())
+    return XposedHelpers.findAndHookMethod(java, name, *args, hook.build())
 }
 
 fun <T> MethodHookParam.thisObject(): T = thisObject as T

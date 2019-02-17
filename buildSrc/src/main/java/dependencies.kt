@@ -14,7 +14,7 @@ object Build {
 object Publishing {
     const val groupId = "com.ivianuu.xposedktx"
     const val vcsUrl = "https://github.com/IVIanuu/xposed-ktx"
-    const val version = "${Build.versionName}-dev-1"
+    const val version = "${Build.versionName}-dev-2"
 }
 
 object Versions {
@@ -24,7 +24,7 @@ object Versions {
 
     const val bintray = "1.8.4"
 
-    const val kotlin = "1.3.20"
+    const val kotlin = "1.3.21"
     const val mavenGradlePlugin = "2.1"
     const val xposed = "82"
 }

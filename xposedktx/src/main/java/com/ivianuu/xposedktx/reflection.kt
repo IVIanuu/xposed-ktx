@@ -41,18 +41,11 @@ fun Any.setProperty(name: String, value: Any?) {
     XposedHelpers.setObjectField(this, name, value)
 }
 
-inline fun <reified T> getStaticProperty(name: String): T =
-    getStaticProperty(T::class, name)
+fun <T> KClass<*>.getStaticProperty(name: String): T =
+    XposedHelpers.getStaticObjectField(java, name) as T
 
-fun <T> getStaticProperty(type: KClass<*>, name: String): T =
-    XposedHelpers.getStaticObjectField(type.java, name) as T
-
-inline fun <reified T> setStaticProperty(name: String, value: Any?) {
-    setStaticProperty(T::class, name, value)
-}
-
-fun setStaticProperty(type: KClass<*>, name: String, value: Any?) {
-    XposedHelpers.setStaticObjectField(type.java, name, value)
+fun KClass<*>.setStaticProperty(name: String, value: Any?) {
+    XposedHelpers.setStaticObjectField(java, name, value)
 }
 
 fun <T> Any.getAdditionalProperty(name: String): T =
@@ -66,26 +59,15 @@ fun Any.removeAdditionalProperty(name: String) {
     XposedHelpers.removeAdditionalInstanceField(this, name)
 }
 
-inline fun <reified I, T> getAdditionalStaticProperty(name: String): T =
-    getAdditionalStaticProperty<T>(I::class, name)
+fun <T> KClass<*>.getAdditionalStaticProperty(name: String): T =
+    XposedHelpers.getAdditionalStaticField(java, name) as T
 
-fun <T> getAdditionalStaticProperty(type: KClass<*>, name: String): T =
-    XposedHelpers.getAdditionalStaticField(type.java, name) as T
-
-inline fun <reified T> setAdditionalStaticProperty(name: String, value: Any?) {
-    setAdditionalStaticProperty(T::class, name, value)
+fun KClass<*>.setAdditionalStaticProperty(name: String, value: Any?) {
+    XposedHelpers.setAdditionalStaticField(java, name, value)
 }
 
-fun setAdditionalStaticProperty(type: KClass<*>, name: String, value: Any?) {
-    XposedHelpers.setAdditionalStaticField(type.java, name, value)
-}
-
-inline fun <reified T> removeAdditionalStaticProperty(name: String) {
-    removeAdditionalStaticProperty(T::class, name)
-}
-
-fun removeAdditionalStaticProperty(type: KClass<*>, name: String) {
-    XposedHelpers.removeAdditionalStaticField(type.java, name)
+fun KClass<*>.removeAdditionalStaticProperty(name: String) {
+    XposedHelpers.removeAdditionalStaticField(java, name)
 }
 
 fun <T> Any.invokeFunction(
@@ -100,30 +82,17 @@ fun <T> Any.invokeFunction(
 ): T =
     XposedHelpers.callMethod(this, name, parameterTypes.map { it.java }.toTypedArray(), *args) as T
 
-inline fun <reified S, T> invokeStaticFunction(
+fun <T> KClass<*>.invokeStaticFunction(
     name: String,
     vararg args: Any?
-): T = invokeStaticFunction<T>(S::class, name, *args)
+): T = XposedHelpers.callStaticMethod(java, name, *args) as T
 
-fun <T> invokeStaticFunction(
-    type: KClass<*>,
-    name: String,
-    vararg args: Any?
-): T = XposedHelpers.callStaticMethod(type.java, name, *args) as T
-
-inline fun <reified S, T> invokeStaticFunction(
-    name: String,
-    parameterTypes: Array<KClass<*>>,
-    vararg args: Any?
-): T = invokeStaticFunction(S::class, name, parameterTypes, *args)
-
-fun <T> invokeStaticFunction(
-    type: KClass<*>,
+fun <T> KClass<*>.invokeStaticFunction(
     name: String,
     parameterTypes: Array<KClass<*>>,
     vararg args: Any?
 ): T = XposedHelpers.callStaticMethod(
-    type.java,
+    java,
     name,
     parameterTypes.map { it.java }.toTypedArray(),
     *args
